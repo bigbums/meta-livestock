@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('livestocks', function (Blueprint $table) {
             $table->id();
             $table->string('type');  // Type of livestock (e.g., cattle, sheep)
-            $table->string('breed');  // Breed of livestock
+            $table->string('species')->nullable();
+            $table->string('breed')->nullable();  // Breed of livestock
             $table->date('date_of_birth');  // Date of birth
             $table->enum('gender', ['Male', 'Female']);  // Gender of livestock
-            $table->string('rfid_tag')->unique();  // RFID Tag for identification
+            $table->enum('tag_type', ['rfid', 'ear', 'nose', 'ankle', 'body-pattern']);  // Tag tyoe for livestock
+            $table->string('tag_id')->unique();  // Tag for identification
             $table->string('herd_id')->unique();  // Herd Tag for identification
             $table->string('name')->nullable();  // Animal name identification
-            $table->foreignId('owner_id')->constrained('users');  // Foreign key to owner (user)            
+            $table->foreignId('owner_id')->constrained('users');  // Foreign key to owner (user)   
+            $table->foreignId('location_id')->nullable()->constrained('locations');
             $table->timestamps();  // Timestamps for created_at and updated_at
         });
     }

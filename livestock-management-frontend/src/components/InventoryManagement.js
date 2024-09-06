@@ -22,7 +22,7 @@ function InventoryManagement() {
 
   const handleAddInventory = async () => {
     try {
-      await axios.post('http://localhost:8000/api/inventory', newInventory);
+      await axios.post('http://localhost:8080/api/inventory', newInventory);
       fetchInventory();
       setShowModal(false);
       setNewInventory({ location: '', count: 0 });

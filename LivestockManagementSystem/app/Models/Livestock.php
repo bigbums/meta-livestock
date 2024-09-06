@@ -14,7 +14,8 @@ class Livestock extends Model
         'breed',
         'date_of_birth',
         'gender',
-        'rfid_tag',
+        'tag_type',
+        'tag_id',
         'herd_id',
         'owner_id'
     ];

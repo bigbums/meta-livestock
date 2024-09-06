@@ -13,7 +13,8 @@ function LivestockDetails() {
   // Memoize fetchLivestockDetails function
   const fetchLivestockDetails = useCallback(async () => {
     try {
-      const response = await fetch(`/api/livestock/${id}`);
+      const response = await fetch(`/api/livestocks/${id}`);
+      console.log(response)
       const data = await response.json();
       setDetails(data);
     } catch (error) {

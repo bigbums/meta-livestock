@@ -17,9 +17,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
+        'username',
         'email',
         'password',
+        'role_id',
+        'status',
     ];
 
     /**
@@ -43,5 +47,33 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_role');
+    }
+
+    // If you want to directly access user privileges (through roles)
+    public function privileges()
+    {
+        return $this->role->privileges();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Assign default role and status when creating a user
+        static::creating(function ($user) {
+            // Set default role as "User" if no role is provided
+            if (!$user->role_id) {
+                $defaultRole = Role::where('name', 'User')->first();
+                $user->role_id = $defaultRole->id;
+            }
+
+            // Set default status as "inactive"
+            $user->status = 'inactive';
+        });
     }
 }

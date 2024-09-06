@@ -12,7 +12,7 @@ function LivestockList() {
 
   const fetchLivestock = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/livestock');
+      const response = await axios.get('http://localhost:8080/api/livestock');
       setLivestock(response.data);
     } catch (error) {
       console.error('Error fetching livestock data:', error);

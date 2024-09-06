@@ -2,12 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Livestock;
 use Illuminate\Http\Request;
 
 class LivestockController extends Controller
 {
     // List all livestock
+    public function user(Request $request)
+    {
+
+
+        $user = User::create([
+            'username' => $request->username,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return response()->json($user, 201);
+    }
+
     public function listLivestock()
     {
         $livestocks = Livestock::all();
@@ -15,20 +31,31 @@ class LivestockController extends Controller
     }
 
     // Store new livestock
-    public function store(Request $request)
+    public function storeLivestock(Request $request)
     {
         $request->validate([
             'type' => 'required|string',
             'breed' => 'required|string',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:Male,Female',
-            'rfid_tag' => 'required|string|unique:livestocks',
+            'tag_id' => 'required|string|unique:livestocks',
             'herd_id' => 'required|string|unique:livestocks',
             'owner_id' => 'required|exists:users,id'
         ]);
 
-        $livestock = Livestock::create($request->all());
-        return response()->json($livestock, 201);
+        // $livestock = Livestock::create($request->all());
+        $livestock = Livestock::create([
+            'type' => $request->type,
+            'breed' => $request->breed,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'tag_id' => $request->rfid_tag,
+            'herd_id' => $request->herd_id,
+            'owner_id' => $request->owner_id,
+        ]);
+        return response()->json(['message' => 'Feeding record created successfully!', 'data' => $livestock], 201);
+
+        // return response()->json($request->all(), 201);
     }
 
     // Show a specific livestock
