@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('localizatn_tracking', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
-            $table->foreignId('rfid_tag')->constrained('livestocks')->onDelete('cascade');
-            $table->foreignId('herd_id')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('livestock_id')->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('rfid_tag')->foreignId('rfid_tag')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('herd_id')->foreignId('herd_id')->constrained('livestocks')->onDelete('cascade');
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
             $table->timestamp('timestamp');

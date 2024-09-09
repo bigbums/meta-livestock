@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('breeding_management', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('livestock_id')->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
             $table->string('breeding_type'); // e.g., Artificial Insemination, Natural
             $table->date('breeding_date');
             $table->date('expected_delivery_date')->nullable();

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('health_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');  // Foreign key to livestock
+            $table->bigInteger('livestock_id')->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');  // Foreign key to livestock
             $table->date('date');  // Date of the health check or monitoring
             $table->json('vitals')->nullable();  // JSON field to store vital signs (e.g., temperature, heart rate)
             $table->string('diagnosis')->nullable();  // Diagnosis of any condition

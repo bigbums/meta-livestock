@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('feeding_management', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('livestock_id')->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
             $table->date('feeding_date');
             $table->string('feed_type'); // e.g., Hay, Grain, Silage
             $table->decimal('quantity', 8, 2); // Quantity in kg or lbs

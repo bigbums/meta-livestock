@@ -78,13 +78,9 @@ Route::apiResource('farms', FarmController::class);
 Route::apiResource('roles', RoleController::class);
 Route::apiResource('privileges', PrivilegeController::class);
 
+
 // User Routes
 Route::post('register', [UserController::class, 'storeUser']);
-Route::get('email/verify/{id}/{hash}', [UserController::class, 'activate'])->name('verification.verify');
-
-
-// User Routes
-Route::post('register', [UserController::class, 'store']);
 Route::get('email/verify/{id}/{hash}', [UserController::class, 'activate'])->name('verification.verify');
 
 // Admin Routes (Protected)
@@ -92,3 +88,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('admin/activate-user/{id}', [UserController::class, 'activateUserByAdmin']);
     Route::post('admin/deactivate-user/{id}', [UserController::class, 'deactivateUserByAdmin']);
 });
+
+
+// Unauthenticated routes
+// Route::post('register', [UserController::class, 'store']);
+// Route::get('email/verify/{id}/{hash}', [UserController::class, 'activate'])->name('verification.verify');
+
+// // Authenticated routes (Protected)
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('admin/activate-user/{id}', [UserController::class, 'activateUserByAdmin']);
+//     Route::post('admin/deactivate-user/{id}', [UserController::class, 'deactivateUserByAdmin']);
+// });

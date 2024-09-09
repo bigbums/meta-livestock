@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('housing_mvmt_mgmt', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('livestock_id')->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
             $table->string('location'); // Barn, Pasture, Shelter, etc.
             $table->string('movement_type'); // Inbound, Outbound, Transfer, etc.
             $table->date('movement_date');

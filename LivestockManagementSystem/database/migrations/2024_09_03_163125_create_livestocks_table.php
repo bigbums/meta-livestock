@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('herd_id')->unique();  // Herd Tag for identification
             $table->string('name')->nullable();  // Animal name identification
             $table->foreignId('owner_id')->constrained('users');  // Foreign key to owner (user)   
-            $table->foreignId('location_id')->nullable()->constrained('locations');
+            $table->bigInteger('location_id')->foreignId('location_id')->nullable()->constrained('locations');
             $table->timestamps();  // Timestamps for created_at and updated_at
         });
     }

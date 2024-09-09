@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('handling_event_management', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
+            $table->bigInteger('livestock_id')->foreignId('livestock_id')->constrained('livestocks')->onDelete('cascade');
             $table->string('event_type', 100);
             $table->date('event_date');
             $table->text('description')->nullable();

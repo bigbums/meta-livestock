@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
             $table->string('farm_name');
-            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->bigInteger('owner_id')->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->string('contact_number')->nullable();
             $table->float('size')->nullable();
             $table->enum('farm_type', ['Dairy', 'Poultry', 'Mixed', 'Crop']);
-            $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
+            $table->bigInteger('location_id')->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
 
             $table->timestamps();
         });
