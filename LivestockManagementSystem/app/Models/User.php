@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -41,39 +44,68 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+
+    /**
+     * Dates to be handled as Carbon instances for soft delete.
+     *
+     * @var array<int, string>
+     */
+
+    protected $dates = ['deleted_at']; // Soft delete support
+
+
+
+    /**
+     * Define relationship with Role.
+     * Each user belongs to a single role.
+     */
+
+    public function role()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Role::class);
     }
 
-    public function roles()
+    /**
+     * Helper method to check if the user has a specific role.
+     */
+
+    public function hasRole($role)
     {
-        return $this->belongsToMany(Role::class, 'user_role');
+        return $this->role && $this->role->name === $role;
     }
+
 
     // If you want to directly access user privileges (through roles)
     public function privileges()
     {
-        return $this->role->privileges();
+        return $this->role ? $this->role->privileges : collect();
     }
+
+    /**
+     * Boot method to set default role and status when creating a user.
+     */
 
     protected static function boot()
     {
         parent::boot();
 
-        // Assign default role and status when creating a user
         static::creating(function ($user) {
             // Set default role as "User" if no role is provided
             if (!$user->role_id) {
                 $defaultRole = Role::where('name', 'User')->first();
-                $user->role_id = $defaultRole->id;
+                $user->role_id = $defaultRole ? $defaultRole->id : null;
             }
 
             // Set default status as "inactive"
-            $user->status = 'inactive';
+            if (!$user->status) {
+                $user->status = 'inactive';
+            }
         });
     }
 }

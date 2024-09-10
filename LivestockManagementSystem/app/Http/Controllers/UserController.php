@@ -3,8 +3,9 @@
 // app/Http/Controllers/UserController.php
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Audit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -178,5 +179,70 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+
+    public function softDeleteUser($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->delete();
+
+        // Log the action in audit
+        Audit::create([
+            'user_id' => auth()->id(),
+            'action' => 'Deleted User',
+            'description' => "User '{$user->name}' was soft-deleted.",
+        ]);
+
+        return response()->json(['message' => 'User soft-deleted successfully'], 200);
+    }
+
+    public function restoreUser($id)
+    {
+        $user = User::withTrashed()->find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->restore();
+
+        // Log the action in audit
+        Audit::create([
+            'user_id' => auth()->id(),
+            'action' => 'Restored User',
+            'description' => "User '{$user->name}' was restored.",
+        ]);
+
+        return response()->json(['message' => 'User restored successfully'], 200);
+    }
+
+    public function updateUserStatus(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:active,inactive,banned', // Define allowed statuses
+        ]);
+
+        $user->update(['status' => $validated['status']]);
+
+        // Log the action in audit
+        Audit::create([
+            'user_id' => auth()->id(),
+            'action' => 'Updated User Status',
+            'description' => "User '{$user->name}' status changed to '{$validated['status']}'.",
+        ]);
+
+        return response()->json(['message' => 'User status updated successfully'], 200);
     }
 }

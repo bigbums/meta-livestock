@@ -16,6 +16,8 @@ use App\Http\Controllers\FeedingManagementController;
 use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
 use App\Http\Controllers\HandlingEventManagementController;
+use App\Models\Role;
+use App\Http\Controllers\RolePrivilegeController;
 
 
 // Route::apiResource('livestocks', LivestockController::class);
@@ -76,8 +78,39 @@ Route::apiResource('locations', LocationController::class);
 Route::apiResource('farms', FarmController::class);
 
 Route::apiResource('roles', RoleController::class);
-Route::apiResource('privileges', PrivilegeController::class);
 
+// Route::apiResource('privileges', PrivilegeController::class);
+Route::middleware(['auth:api'])->group(function () {
+
+
+    // Only admins can create, update, and delete roles
+    Route::middleware('admin')->group(function () {
+        Route::get('index/privileges', [PrivilegeController::class, 'index']);
+        Route::get('show/privileges/{privilege}', [PrivilegeController::class, 'show']);
+        Route::post('store/privileges', [PrivilegeController::class, 'store']);
+        Route::put('update/privileges/{privilege}', [PrivilegeController::class, 'update']);
+        Route::delete('destroy/privileges/{privilege}', [PrivilegeController::class, 'destroy']);
+
+        Route::prefix('roles')->group(function () {
+            Route::get('/', [RoleController::class, 'listRole']); // List all roles
+            // Route model binding for Role
+            Route::get('{role}', [RoleController::class, 'showRole']); // Show a specific role
+
+            // Only admins can create, update, and delete privileges
+            Route::middleware('admin')->group(function () {
+                Route::post('/', [RoleController::class, 'storeRole']); // Create a new role
+                Route::put('{role}', [RoleController::class, 'updateRole']); // Update a specific role
+                Route::delete('{role}', [RoleController::class, 'destroyRole']); // Delete a specific role
+            });
+
+            Route::prefix('roles')->group(function () {
+                Route::get('{roleId}/privileges', [RolePrivilegeController::class, 'listRolePrivileges']);
+                Route::post('assign-privilege', [RolePrivilegeController::class, 'assignPrivilegeToRole']);
+                Route::post('remove-privilege', [RolePrivilegeController::class, 'removePrivilegeFromRole']);
+            });
+        });
+    });
+});
 
 // User Routes
 Route::post('register', [UserController::class, 'storeUser']);

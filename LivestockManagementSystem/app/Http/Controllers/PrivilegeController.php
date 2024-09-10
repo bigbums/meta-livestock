@@ -2,89 +2,103 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Audit;
 use App\Models\Privilege;
+// use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StorePrivilegeRequest;
+use App\Http\Requests\UpdatePrivilegeRequest;
 
 class PrivilegeController extends Controller
 {
-    public function listPrivilege()
+    public function index()
     {
         $privileges = Privilege::all();
-        return response()->json($privileges, 200);
+        return response()->json([
+            'success' => true,
+            'data' => $privileges
+        ], 200);
     }
 
     /**
      * Store a newly created privilege in storage.
      */
-    public function storePrivilege(Request $request)
+    public function store(StorePrivilegeRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:privileges,name',
-            'description' => 'nullable|string',
+        $privilege = Privilege::create($request->validated());
+
+        // Log the action in audit
+        Audit::create([
+            'user_id' => auth()->id(),
+            'action' => 'Created Privilege',
+            'auditable_type' => Privilege::class,
+            'auditable_id' => $privilege->id,
+            'description' => "Privilege '{$privilege->name}' was created.",
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
 
-        $privilege = Privilege::create($request->all());
 
-        return response()->json($privilege, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Privilege created successfully',
+            'data' => $privilege
+        ], 201);
     }
 
     /**
      * Display the specified privilege.
      */
-    public function showPrivilege($id)
+    public function show(Privilege $privilege)
     {
-        $privilege = Privilege::find($id);
-
-        if (!$privilege) {
-            return response()->json(['message' => 'Privilege not found'], 404);
-        }
-
-        return response()->json($privilege, 200);
+        return response()->json([
+            'success' => true,
+            'data' => $privilege
+        ], 200);
     }
 
     /**
      * Update the specified privilege in storage.
      */
-    public function updatePrivilege(Request $request, $id)
+    public function update(UpdatePrivilegeRequest $request, Privilege $privilege)
     {
-        $privilege = Privilege::find($id);
+        $privilege->update($request->validated());
 
-        if (!$privilege) {
-            return response()->json(['message' => 'Privilege not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:privileges,name,' . $id,
-            'description' => 'nullable|string',
+        // Log the action in audit
+        Audit::create([
+            'user_id' => auth()->id(),
+            'action' => 'Updated Privilege',
+            'auditable_type' => Privilege::class,
+            'auditable_id' => $privilege->id,
+            'description' => "Privilege '{$privilege->name}' was updated.",
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $privilege->update($request->all());
-
-        return response()->json($privilege, 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Privilege updated successfully',
+            'data' => $privilege
+        ], 200);
     }
 
     /**
      * Remove the specified privilege from storage.
      */
-    public function destroyPrivilege($id)
+    public function destroy(Privilege $privilege)
     {
-        $privilege = Privilege::find($id);
-
-        if (!$privilege) {
-            return response()->json(['message' => 'Privilege not found'], 404);
-        }
-
+        $privilegeName = $privilege->name; // Store the privilege name before deleting
         $privilege->delete();
 
-        return response()->json(['message' => 'Privilege deleted successfully'], 200);
+        // Log the action in audit
+        Audit::create([
+            'user_id' => auth()->id(),
+            'action' => 'Deleted Privilege',
+            'auditable_type' => Privilege::class,
+            'auditable_id' => $privilege->id,
+            'description' => "Privilege '{$privilegeName}' was deleted.",
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Privilege deleted successfully'
+        ], 200);
     }
 }
