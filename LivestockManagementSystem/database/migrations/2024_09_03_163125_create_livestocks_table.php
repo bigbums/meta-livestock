@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('breed')->nullable();  // Breed of livestock
             $table->date('date_of_birth');  // Date of birth
             $table->enum('gender', ['Male', 'Female']);  // Gender of livestock
-            $table->enum('tag_type', ['rfid', 'ear', 'nose', 'ankle', 'body-pattern']);  // Tag tyoe for livestock
+            $table->enum('health_status', ['healthy', 'sick'])->nullable();
             $table->string('tag_id')->unique();  // Tag for identification
             $table->string('herd_id')->unique();  // Herd Tag for identification
             $table->string('name')->nullable();  // Animal name identification

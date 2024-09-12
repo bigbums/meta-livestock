@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FarmController;
@@ -12,12 +13,14 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LivestockController;
 use App\Http\Controllers\PrivilegeController;
 use App\Http\Controllers\HealthRecordController;
+use App\Http\Controllers\RolePrivilegeController;
+use App\Http\Controllers\DiseaseIncidentController;
 use App\Http\Controllers\FeedingManagementController;
 use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
 use App\Http\Controllers\HandlingEventManagementController;
-use App\Models\Role;
-use App\Http\Controllers\RolePrivilegeController;
+use App\Http\Controllers\BreedingController;
+use App\Http\Controllers\PedigreeController;
 
 
 // Route::apiResource('livestocks', LivestockController::class);
@@ -121,6 +124,33 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('admin/activate-user/{id}', [UserController::class, 'activateUserByAdmin']);
     Route::post('admin/deactivate-user/{id}', [UserController::class, 'deactivateUserByAdmin']);
 });
+
+
+
+Route::prefix('health-records/{healthRecordId}/disease-incidents')->group(function () {
+    Route::get('/', [DiseaseIncidentController::class, 'index']);
+    Route::post('/', [DiseaseIncidentController::class, 'store']);
+    Route::get('{id}', [DiseaseIncidentController::class, 'show']);
+    Route::put('{id}', [DiseaseIncidentController::class, 'update']);
+    Route::delete('{id}', [DiseaseIncidentController::class, 'destroy']);
+});
+
+
+Route::prefix('livestock/{livestockId}')->group(function () {
+    Route::post('schedule-breeding', [BreedingController::class, 'scheduleBreeding']);
+    Route::post('record-breeding', [BreedingController::class, 'recordBreeding']);
+    Route::get('breeding-records', [BreedingController::class, 'getBreedingRecords']);
+});
+
+
+
+
+Route::prefix('livestock/{livestockId}')->group(function () {
+    Route::post('pedigree', [PedigreeController::class, 'storePedigree']);
+    Route::put('pedigree', [PedigreeController::class, 'updatePedigree']);
+    Route::get('pedigree', [PedigreeController::class, 'showPedigree']);
+});
+
 
 
 // Unauthenticated routes

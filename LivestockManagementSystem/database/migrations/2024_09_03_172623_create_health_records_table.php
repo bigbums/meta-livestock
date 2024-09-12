@@ -18,6 +18,12 @@ return new class extends Migration
             $table->json('vitals')->nullable();  // JSON field to store vital signs (e.g., temperature, heart rate)
             $table->string('diagnosis')->nullable();  // Diagnosis of any condition
             $table->text('treatment')->nullable();  // Details of treatment or medication
+            $table->string('dr_firstname')->nullable();  // Details of tr
+            $table->string('dr_lastname')->nullable();
+            $table->string('dr_id_card')->nullable();
+            $table->string('dr_clinic_name')->nullable();
+            $table->text('medication')->nullable();
+            $table->string('surgery')->nullable();
             $table->text('notes')->nullable();  // Additional notes by the veterinarian or user
 
             $table->timestamps();  // Timestamps for created_at and updated_at
