@@ -1,14 +1,20 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Models\Role;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FarmController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\BreedingController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\PedigreeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LivestockController;
 use App\Http\Controllers\PrivilegeController;
@@ -19,9 +25,17 @@ use App\Http\Controllers\FeedingManagementController;
 use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
 use App\Http\Controllers\HandlingEventManagementController;
-use App\Http\Controllers\BreedingController;
-use App\Http\Controllers\PedigreeController;
 
+
+Route::apiResource('posts', PostController::class);
+
+// Route::get('/', function () {
+//     return 'API';
+// });
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // Route::apiResource('livestocks', LivestockController::class);
 // Route::get('/c/to', [LivestockController::class, 'listLivestock']);
@@ -116,14 +130,14 @@ Route::middleware(['auth:api'])->group(function () {
 });
 
 // User Routes
-Route::post('register', [UserController::class, 'storeUser']);
-Route::get('email/verify/{id}/{hash}', [UserController::class, 'activate'])->name('verification.verify');
+// Route::post('register', [UserController::class, 'storeUser']);
+// Route::get('email/verify/{id}/{hash}', [UserController::class, 'activate'])->name('verification.verify');
 
 // Admin Routes (Protected)
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('admin/activate-user/{id}', [UserController::class, 'activateUserByAdmin']);
-    Route::post('admin/deactivate-user/{id}', [UserController::class, 'deactivateUserByAdmin']);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('admin/activate-user/{id}', [UserController::class, 'activateUserByAdmin']);
+//     Route::post('admin/deactivate-user/{id}', [UserController::class, 'deactivateUserByAdmin']);
+// });
 
 
 
@@ -150,15 +164,3 @@ Route::prefix('livestock/{livestockId}')->group(function () {
     Route::put('pedigree', [PedigreeController::class, 'updatePedigree']);
     Route::get('pedigree', [PedigreeController::class, 'showPedigree']);
 });
-
-
-
-// Unauthenticated routes
-// Route::post('register', [UserController::class, 'store']);
-// Route::get('email/verify/{id}/{hash}', [UserController::class, 'activate'])->name('verification.verify');
-
-// // Authenticated routes (Protected)
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('admin/activate-user/{id}', [UserController::class, 'activateUserByAdmin']);
-//     Route::post('admin/deactivate-user/{id}', [UserController::class, 'deactivateUserByAdmin']);
-// });

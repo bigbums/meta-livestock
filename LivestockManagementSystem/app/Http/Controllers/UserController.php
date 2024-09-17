@@ -27,10 +27,11 @@ class UserController extends Controller
      */
     public function storeUser(Request $request)
     {
+        dd($request->all());
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'username' => 'required|string|max:20',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'userName' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             //'role_id' => 'required|exists:roles,id', // Ensure role_id exists in roles table
@@ -41,9 +42,9 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'username' => $request->username,
+            'firstname' => $request->firstName,
+            'lastname' => $request->lastName,
+            'username' => $request->userName,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             //'role_id' => $request->role_id,
