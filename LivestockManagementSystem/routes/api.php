@@ -27,6 +27,10 @@ use App\Http\Controllers\LocalizatnTrackingController;
 use App\Http\Controllers\HandlingEventManagementController;
 
 
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
 Route::apiResource('posts', PostController::class);
 
 // Route::get('/', function () {
