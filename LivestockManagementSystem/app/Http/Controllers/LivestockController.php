@@ -26,34 +26,39 @@ class LivestockController extends Controller
 
     public function listLivestock()
     {
-        $livestocks = Livestock::all();
-        return response()->json($livestocks);
+        // $livestocks = Livestock::all();
+        // return response()->json($livestocks);
+
+        $livestock = Livestock::with(['owner'])->orderBy('id', 'desc')->get();
+        return response()->json($livestock);
     }
 
     // Store new livestock
     public function storeLivestock(Request $request)
     {
+        // dd($request->all());
+
         $request->validate([
             'type' => 'required|string',
-            'breed' => 'required|string',
+            'species_id' => 'required|exists:species,id',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:Male,Female',
             'tag_id' => 'required|string|unique:livestocks',
             'herd_id' => 'required|string|unique:livestocks',
             'owner_id' => 'required|exists:users,id'
         ]);
-
         // $livestock = Livestock::create($request->all());
         $livestock = Livestock::create([
             'type' => $request->type,
-            'breed' => $request->breed,
             'date_of_birth' => $request->date_of_birth,
             'gender' => $request->gender,
-            'tag_id' => $request->rfid_tag,
+            'tag_id' => $request->tag_id,
             'herd_id' => $request->herd_id,
+            'health_status' => $request->health_status,
+            'species_id' => $request->species,
             'owner_id' => $request->owner_id,
         ]);
-        return response()->json(['message' => 'Feeding record created successfully!', 'data' => $livestock], 201);
+        return response()->json(['message' => 'Livestock record created successfully!', 'data' => $livestock], 201);
 
         // return response()->json($request->all(), 201);
     }

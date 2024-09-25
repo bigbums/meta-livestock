@@ -71,4 +71,9 @@ class Livestock extends Model
     {
         return $this->hasMany(Pedigree::class, 'dam_id');
     }
+
+    public function species()
+    {
+        return $this->belongsTo(Species::class);
+    }
 }

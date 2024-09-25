@@ -3,6 +3,7 @@ import '../App.css';
 import { useContext } from "react";
 import { AppContext } from "../Context/AppContext";
 
+
 export default function Layout() {
     const {user, token, setUser, setToken } = useContext(AppContext);
     const navigate = useNavigate();
@@ -44,8 +45,8 @@ export default function Layout() {
                         </p>
 
                         
-                <Link to="/create" className="nav-link c-white" style={{ color: 'white' }}>
-                New Post
+                <Link to="/createlivestock" className="nav-link c-white" style={{ color: 'white' }}>
+                New Livestock
                 </Link>
                         <form onSubmit={handleLogout}>
                             <button className="nav-link">Logout</button>

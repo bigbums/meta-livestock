@@ -1,41 +1,57 @@
 import { createContext, useEffect, useState } from "react";
 
-
-
-export const AppContext =  createContext() ;
-
-
+// Create context
+export const AppContext = createContext();
 
 export default function AppProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [user, setUser] = useState(null);
 
     async function getUser() {
-        const res = await fetch("/api/user", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-             },
-        });
+        // Ensure we don't try fetching the user without a token
+        if (!token) return;
 
-        const data = await res.json();
+        try {
+            const res = await fetch("/api/user", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-        if (res.ok) {
-            setUser(data);
+            const data = await res.json();
+
+            if (res.ok) {
+                setUser(data); // Set the user if the request succeeds
+            } else {
+                // Token might be invalid or expired
+                setToken(null);
+                setUser(null);
+                localStorage.removeItem("token"); // Remove invalid token
+            }
+        } catch (error) {
+            console.error("Failed to fetch user:", error);
+            // Handle the error appropriately
         }
-
-        
     }
 
-    useEffect(()=>{
-       if (token) {
-        getUser();
-    }
+    useEffect(() => {
+        if (token) {
+            getUser();
+        }
+    }, [token]);
+
+    // Sync token with localStorage whenever it changes
+    useEffect(() => {
+        if (token) {
+            localStorage.setItem("token", token);
+        } else {
+            localStorage.removeItem("token");
+        }
     }, [token]);
 
     return (
-         <AppContext.Provider value={{ token, setToken, user, setUser }}>
+        <AppContext.Provider value={{ token, setToken, user, setUser }}>
             {children}
-
-    </AppContext.Provider>
+        </AppContext.Provider>
     );
 }

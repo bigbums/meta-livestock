@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Models\Role;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FarmController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BreedController;
 use App\Http\Controllers\StateController;
+use App\Http\Controllers\UsageController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\SpeciesController;
 use App\Http\Controllers\BreedingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PedigreeController;
@@ -44,6 +47,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 // Route::apiResource('livestocks', LivestockController::class);
 // Route::get('/c/to', [LivestockController::class, 'listLivestock']);
 
+// Route::apiResource('livestocks', LivestockController::class);
+
 Route::prefix('livestocks')->group(function () {
 
     Route::post('/user', [LivestockController::class, 'user']);
@@ -53,6 +58,40 @@ Route::prefix('livestocks')->group(function () {
     Route::put('/update/{id}', [LivestockController::class, 'updateLivestock']);
     Route::delete('delete/{id}', [LivestockController::class, 'destroyLivestock']);
 });
+
+
+// CRUD routes for Usage
+Route::get('/usages', [UsageController::class, 'index']);  // Get all usages
+Route::get('/usages/{id}', [UsageController::class, 'show']);  // Get a specific usage
+Route::post('/usages', [UsageController::class, 'store']);  // Create new usage
+Route::put('/usages/{id}', [UsageController::class, 'update']);  // Update usage
+Route::delete('/usages/{id}', [UsageController::class, 'destroy']);  // Delete usage
+
+// CRUD routes for Species
+Route::get('/species', [SpeciesController::class, 'index']);  // Get all species
+Route::get('/species/{id}/breeds', [SpeciesController::class, 'getBreeds']);
+Route::get('/species/{id}', [SpeciesController::class, 'show']);  // Get a specific species
+Route::post('/species', [SpeciesController::class, 'store']);  // Create new species
+Route::put('/species/{id}', [SpeciesController::class, 'update']);  // Update species
+Route::delete('/species/{id}', [SpeciesController::class, 'destroy']);  // Delete species
+
+// CRUD routes for Breed
+Route::get('/breeds', [BreedController::class, 'index']);  // Get all breeds
+Route::get('/breeds/{id}', [BreedController::class, 'show']);  // Get a specific breed
+Route::post('/breeds', [BreedController::class, 'store']);  // Create new breed
+Route::put('/breeds/{id}', [BreedController::class, 'update']);  // Update breed
+Route::delete('/breeds/{id}', [BreedController::class, 'destroy']);  // Delete breed
+Route::get('/breeds/{specie_id}', [BreedController::class, 'getBreedsBySpecie']);
+
+// Attach and detach relationships
+Route::post('/species/{species}/usages', [SpeciesController::class, 'attachUsage']);  // Attach usage to species
+Route::delete('/species/{species}/usages/{usage}', [SpeciesController::class, 'detachUsage']);  // Detach usage from species
+Route::post('/breeds/{breed}/usages', [BreedController::class, 'attachUsage']);  // Attach usage to breed
+Route::delete('/breeds/{breed}/usages/{usage}', [BreedController::class, 'detachUsage']);  // Detach usage from breed
+Route::post('/species/{species}/breeds', [SpeciesController::class, 'attachBreed']);  // Attach breed to species
+Route::delete('/species/{species}/breeds/{breed}', [SpeciesController::class, 'detachBreed']);  // Detach breed from species
+
+
 
 
 Route::apiResource('inventories', InventoryController::class);

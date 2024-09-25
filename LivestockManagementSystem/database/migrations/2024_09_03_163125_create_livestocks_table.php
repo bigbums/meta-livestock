@@ -12,19 +12,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('livestocks', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');  // Type of livestock (e.g., cattle, sheep)
-            $table->string('species')->nullable();
-            $table->string('breed')->nullable();  // Breed of livestock
-            $table->date('date_of_birth');  // Date of birth
-            $table->enum('gender', ['Male', 'Female']);  // Gender of livestock
-            $table->enum('health_status', ['healthy', 'sick'])->nullable();
-            $table->string('tag_id')->unique();  // Tag for identification
-            $table->string('herd_id')->unique();  // Herd Tag for identification
-            $table->string('name')->nullable();  // Animal name identification
-            $table->foreignId('owner_id')->constrained('users');  // Foreign key to owner (user)   
-            $table->bigInteger('location_id')->foreignId('location_id')->nullable()->constrained('locations');
-            $table->timestamps();  // Timestamps for created_at and updated_at
+            $table->id();  // Primary Key
+            $table->string('type');  // General type (e.g., cattle, goat, sheep)
+
+            // Foreign key to Species
+            $table->foreignId('species_id')->constrained('species')->onDelete('cascade');
+
+            // Foreign key to Breed
+            // $table->foreignId('breed_id')->constrained('breeds')->onDelete('set null')->nullable();
+
+            $table->date('date_of_birth');  // Date of birth of the livestock
+            $table->enum('gender', ['Male', 'Female']);  // Gender of the livestock
+            $table->enum('health_status', ['healthy', 'sick'])->nullable();  // Health status of the livestock
+            $table->string('tag_id')->unique();  // Unique tag for identification
+            $table->string('herd_id')->nullable();  // Identifier for the herd
+            $table->string('name')->nullable();  // Name for livestock (optional)
+
+            // Foreign key to Owner (User)
+            $table->bigInteger('owner_id')->constrained('users')->onDelete('cascade');
+
+            // Foreign key to Location (e.g., farm or region)
+            $table->bigInteger('location_id')->constrained('locations')->nullable()->onDelete('set null');
+
+            $table->timestamps();  // Created and updated timestamps
         });
     }
 
