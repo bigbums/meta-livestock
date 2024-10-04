@@ -28,6 +28,7 @@ use App\Http\Controllers\FeedingManagementController;
 use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
 use App\Http\Controllers\HandlingEventManagementController;
+use App\Http\Controllers\NutritionalRequirementController;
 
 
 Route::get('/user', function (Request $request) {
@@ -55,7 +56,10 @@ Route::prefix('livestocks')->group(function () {
     Route::get('/list', [LivestockController::class, 'listLivestock']);
     Route::get('/detail/{id}', [LivestockController::class, 'showLivestock']);
     Route::post('/store', [LivestockController::class, 'storeLivestock']);
+    Route::get('/species', [LivestockController::class, 'getSpecies']);
+    Route::get('/species/{species_id}/breeds', [LivestockController::class, 'getBreeds']);
     Route::put('/update/{id}', [LivestockController::class, 'updateLivestock']);
+    Route::put('/update/form/{id}', [LivestockController::class, 'updateLivestockForm']);
     Route::delete('delete/{id}', [LivestockController::class, 'destroyLivestock']);
 });
 
@@ -91,6 +95,12 @@ Route::delete('/breeds/{breed}/usages/{usage}', [BreedController::class, 'detach
 Route::post('/species/{species}/breeds', [SpeciesController::class, 'attachBreed']);  // Attach breed to species
 Route::delete('/species/{species}/breeds/{breed}', [SpeciesController::class, 'detachBreed']);  // Detach breed from species
 
+
+Route::get('/nutritional-requirements', [NutritionalRequirementController::class, 'index']);
+Route::post('/nutritional-requirements', [NutritionalRequirementController::class, 'store']);
+Route::get('/nutritional-requirements/{id}', [NutritionalRequirementController::class, 'show']);
+Route::put('/nutritional-requirements/{id}', [NutritionalRequirementController::class, 'update']);
+Route::delete('/nutritional-requirements/{id}', [NutritionalRequirementController::class, 'destroy']);
 
 
 

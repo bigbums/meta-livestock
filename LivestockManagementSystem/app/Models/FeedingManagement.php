@@ -17,6 +17,8 @@ class FeedingManagement extends Model
         'livestock_id',
         'feeding_date',
         'feed_type',
+        'feed_lot',
+        'livestock_qty',
         'quantity',
         'unit',
         'notes',

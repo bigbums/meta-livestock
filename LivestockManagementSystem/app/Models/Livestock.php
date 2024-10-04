@@ -18,6 +18,8 @@ class Livestock extends Model
         'location',
         'gender',
         'tag_id',
+        'species_id',
+        'breed_id',
         'herd_id',
         'health_status',
         'owner_id',
@@ -40,6 +42,12 @@ class Livestock extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
     // Relationship with Breeding
     public function breeding()
@@ -75,5 +83,15 @@ class Livestock extends Model
     public function species()
     {
         return $this->belongsTo(Species::class);
+    }
+
+    public function breed()
+    {
+        return $this->belongsTo(Breed::class);
+    }
+
+    public function treatmentPlans()
+    {
+        return $this->hasMany(Treatment::class);
     }
 }

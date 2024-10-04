@@ -1,3 +1,4 @@
+import Sidebar from "../Components/Sidebar";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 // import {n } from "react-router-dom";
@@ -23,10 +24,19 @@ export default function Home() {
         getLivestock();
     }, []);
 
-    console.log(livestock);
+    //console.log(livestock);
     return (
         <>
             <h1 className="title">Livestock Records</h1>
+
+            <div className="flex">
+        {/* Sidebar Component */}
+        <Sidebar />
+            
+
+             {/* Main Content */}
+             <div className="w-3/4 p-4">
+            
 
             {success && (
                 <div className="success-message bg-green-500 text-white p-2 mb-4">
@@ -65,7 +75,7 @@ export default function Home() {
 
                                 <td className="px-4 py-2 border">
                                     <Link
-                                        to={`/livestock/${livestock.id}`}
+                                        to={`/api/livestocks/detail/${livestock.id}`}
                                         className="bg-blue-500 text-white text-sm rounded-lg px-3 py-1"
                                     >
                                         Read more ...
@@ -78,6 +88,9 @@ export default function Home() {
             ) : (
                 <p>There are no livestock records available.</p>
             )}
+             </div>
+             </div>
         </>
+       
     );
 }

@@ -21,4 +21,9 @@ class Species extends Model
     {
         return $this->hasMany(Breed::class);
     }
+
+    public function livestock()
+    {
+        return $this->hasMany(Livestock::class);
+    }
 }
