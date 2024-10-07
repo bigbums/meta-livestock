@@ -110,89 +110,121 @@ export default function UpdateLivestock() {
 
     return (
         <div className="font-bold text-2xl mb-4">
-            <h2 className="font-bold text-2xl mb-4">Update Livestock</h2>
-            {successMessage && <p className="success">{successMessage}</p>}
-            <form onSubmit={handleUpdate} className="space-y-4">
-                <div>
+          <h2 className="font-bold text-2xl mb-4">Update Livestock</h2>
+          {successMessage && <p className="success">{successMessage}</p>}
+          <form onSubmit={handleUpdate} className="space-y-4">
+            <table className="min-w-full border-collapse border border-slate-400">
+              <tbody>
+                <tr>
+                  <td className="border border-slate-300 p-2">
                     <label className="block">Type:</label>
+                  </td>
+                  <td className="border border-slate-300 p-2">
                     <input
-                        type="text"
-                        value={livestock.type}
-                        onChange={(e) => setLivestock({ ...livestock, type: e.target.value })}
-                        className="border rounded w-full px-2 py-1"
+                      type="text"
+                      value={livestock.type}
+                      onChange={(e) => setLivestock({ ...livestock, type: e.target.value })}
+                      className="border rounded w-full px-2 py-1"
                     />
-                </div>
-                <div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 p-2">
                     <label className="block">Species:</label>
+                  </td>
+                  <td className="border border-slate-300 p-2">
                     <select
-                        value={livestock.species_id}
-                        onChange={(e) => {
-                            const speciesId = e.target.value;
-                            setLivestock({ ...livestock, species_id: speciesId });
-                            getBreeds(speciesId); // Fetch breeds when species changes
-                        }}
-                        className="border rounded w-full px-2 py-1"
+                      value={livestock.species_id}
+                      onChange={(e) => {
+                        const speciesId = e.target.value;
+                        setLivestock({ ...livestock, species_id: speciesId });
+                        getBreeds(speciesId); // Fetch breeds when species changes
+                      }}
+                      className="border rounded w-full px-2 py-1"
                     >
-                        <option value="">Select Species</option>
-                        {species.map((specie) => (
-                            <option key={specie.id} value={specie.id}>
-                                {specie.name}
-                            </option>
-                        ))}
+                      <option value="">Select Species</option>
+                      {species.map((specie) => (
+                        <option key={specie.id} value={specie.id}>
+                          {specie.name}
+                        </option>
+                      ))}
                     </select>
-                </div>
-                <div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 p-2">
                     <label className="block">Breed:</label>
+                  </td>
+                  <td className="border border-slate-300 p-2">
                     <select
-                        value={livestock.breed_id}
-                        onChange={(e) => setLivestock({ ...livestock, breed_id: e.target.value })}
-                        className="border rounded w-full px-2 py-1"
+                      value={livestock.breed_id}
+                      onChange={(e) => setLivestock({ ...livestock, breed_id: e.target.value })}
+                      className="border rounded w-full px-2 py-1"
                     >
-                        <option value="">Select Breed</option>
-                        {breeds.map((breed) => (
-                            <option key={breed.id} value={breed.id}>
-                                {breed.name}
-                            </option>
-                        ))}
+                      <option value="">Select Breed</option>
+                      {breeds.map((breed) => (
+                        <option key={breed.id} value={breed.id}>
+                          {breed.name}
+                        </option>
+                      ))}
                     </select>
-                </div>
-                <div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 p-2">
                     <label className="block">Date of Birth:</label>
+                  </td>
+                  <td className="border border-slate-300 p-2">
                     <input
-                        type="date"
-                        value={livestock.date_of_birth}
-                        onChange={(e) => setLivestock({ ...livestock, date_of_birth: e.target.value })}
-                        className="border rounded w-full px-2 py-1"
+                      type="date"
+                      value={livestock.date_of_birth}
+                      onChange={(e) => setLivestock({ ...livestock, date_of_birth: e.target.value })}
+                      className="border rounded w-full px-2 py-1"
                     />
-                </div>
-                <div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 p-2">
                     <label className="block">Gender:</label>
+                  </td>
+                  <td className="border border-slate-300 p-2">
                     <select
-                        value={livestock.gender}
-                        onChange={(e) => setLivestock({ ...livestock, gender: e.target.value })}
-                        className="border rounded w-full px-2 py-1"
+                      value={livestock.gender}
+                      onChange={(e) => setLivestock({ ...livestock, gender: e.target.value })}
+                      className="border rounded w-full px-2 py-1"
                     >
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
                     </select>
-                </div>
-                <div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-300 p-2">
                     <label className="block">Health Status:</label>
+                  </td>
+                  <td className="border border-slate-300 p-2">
                     <select 
-                        value={livestock.health_status}
-                        onChange={(e) => setLivestock({ ...livestock, health_status: e.target.value })}
-                        className="border rounded w-full px-2 py-1"
+                      value={livestock.health_status}
+                      onChange={(e) => setLivestock({ ...livestock, health_status: e.target.value })}
+                      className="border rounded w-full px-2 py-1"
                     >
-                            <option value="">Select Health Status</option>
-                            <option value="healthy">Healthy</option>
-                            <option value="sick">Sick</option>
+                      <option value="">Select Health Status</option>
+                      <option value="healthy">Healthy</option>
+                      <option value="sick">Sick</option>
                     </select>
-                </div>
-                <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
-                    Update Livestock
-                </button>
-            </form>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="2" className="border border-slate-300 p-2 text-center">
+                    <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2">
+                      Update Livestock
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
         </div>
-    );
-}
+      );
+    }      

@@ -43,6 +43,9 @@ export default function Home() {
                     {success}
                 </div>
             )}
+               <Link to="/createlivestock" className="nav-link c-white bg-black" style={{ color: 'white' }}>
+                New Livestock
+                </Link>
             {livestock.length > 0 ? (
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead>

@@ -1,83 +1,149 @@
-import { useState, useEffect } from 'react';
+// File: ../Pages/Modules/NutritionalRequirement/NutritionalRequirementForm.jsx
+import { useState } from 'react';
 
-export default function NutritionalRequirementsForm() {
-    const [species, setSpecies] = useState([]);
-    const [breeds, setBreeds] = useState([]);
-    const [formData, setFormData] = useState({
-        species_id: '',
-        breed_id: '',
-        age_range: '',
-        weight_range: '',
-        //health_status: '',
-        production_type: '',
-        requirement_type: '',
-        requirement_value: ''
+export default function NutritionalRequirementForm({ livestockId }) {
+  const [formData, setFormData] = useState({
+    livestock_id: livestockId, // Foreign key to link the nutritional requirement to the livestock
+    species_id: '',
+    breed_id: '',
+    age_range: '',
+    weight_range: '',
+    health_status: '',
+    production_type: '',
+    requirement_type: '',
+    requirement_value: ''
+  });
+
+  const [message, setMessage] = useState('');
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      species: selectedSpecies, // Add the selected species ID
+      breed: selectedBreed,     // Add the selected breed ID
+      [e.target.name]: e.target.value
     });
+  };
 
-    // Fetch species and populate dropdown
-    useEffect(() => {
-        async function fetchSpecies() {
-            const res = await fetch('/api/species');
-            const data = await res.json();
-            setSpecies(data);
-        }
-        fetchSpecies();
-    }, []);
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/nutritional-requirements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
-    // Fetch breeds when species is selected
-    const handleSpeciesChange = async (e) => {
-        const speciesId = e.target.value;
-        setFormData({ ...formData, species_id: speciesId });
+      const data = await response.json();
 
-        if (speciesId) {
-            const res = await fetch(`/api/species/${speciesId}/breeds`);
-            const data = await res.json();
-            setBreeds(data);
-        }
-    };
-
-    // Handle form submit
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const res = await fetch('/api/nutritional-requirements', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
+      if (response.ok) {
+        setMessage('Nutritional requirement added successfully!');
+        // Clear form after successful submission
+        setFormData({
+          livestock_id: livestockId,
+          species_id: '',
+          breed_id: '',
+          age_range: '',
+          weight_range: '',
+          health_status: '',
+          production_type: '',
+          requirement_type: '',
+          requirement_value: ''
         });
+      } else {
+        setMessage('Failed to add nutritional requirement: ' + data.message);
+      }
+    } catch (error) {
+      setMessage('Error: ' + error.message);
+    }
+  };
 
-        const data = await res.json();
-        console.log('Created Nutritional Requirement:', data);
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>Species</label>
-            <select onChange={handleSpeciesChange} value={formData.species_id}>
-                <option value="">Select Species</option>
-                {species.map((sp) => (
-                    <option key={sp.id} value={sp.id}>{sp.name}</option>
-                ))}
-            </select>
-
-            <label>Breed</label>
-            <select onChange={(e) => setFormData({ ...formData, breed_id: e.target.value })} value={formData.breed_id}>
-                <option value="">Select Breed</option>
-                {breeds.map((br) => (
-                    <option key={br.id} value={br.id}>{br.name}</option>
-                ))}
-            </select>
-
-            {/* Other form fields for age range, weight, etc. */}
-            <input type="text" placeholder="Age Range" onChange={(e) => setFormData({ ...formData, age_range: e.target.value })} />
-            <input type="text" placeholder="Weight Range" onChange={(e) => setFormData({ ...formData, weight_range: e.target.value })} />
-            {/* <input type="text" placeholder="Health Status" onChange={(e) => setFormData({ ...formData, health_status: e.target.value })} /> */}
-            <input type="text" placeholder="Production Type" onChange={(e) => setFormData({ ...formData, production_type: e.target.value })} />
-            <input type="text" placeholder="Requirement Type" onChange={(e) => setFormData({ ...formData, requirement_type: e.target.value })} />
-            <input type="number" placeholder="Requirement Value" onChange={(e) => setFormData({ ...formData, requirement_value: e.target.value })} />
-
-            <button type="submit">Add Nutritional Requirement</button>
-        </form>
-    );
+  return (
+    <div className="nutritional-requirement-form">
+      <h2>Add Nutritional Requirement</h2>
+      {message && <div className="message">{message}</div>}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Species ID:
+          <input
+            type="text"
+            name="species_id"
+            value={formData.species_id}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Breed ID:
+          <input
+            type="text"
+            name="breed_id"
+            value={formData.breed_id}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Age Range:
+          <input
+            type="text"
+            name="age_range"
+            value={formData.age_range}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Weight Range:
+          <input
+            type="text"
+            name="weight_range"
+            value={formData.weight_range}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Health Status:
+          <input
+            type="text"
+            name="health_status"
+            value={formData.health_status}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Production Type:
+          <input
+            type="text"
+            name="production_type"
+            value={formData.production_type}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Requirement Type:
+          <input
+            type="text"
+            name="requirement_type"
+            value={formData.requirement_type}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          Requirement Value:
+          <input
+            type="number"
+            name="requirement_value"
+            value={formData.requirement_value}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
 }

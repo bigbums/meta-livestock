@@ -15,6 +15,12 @@ import CreateLivestock from "./pages/Livestock/CreateLivestock";
 import ShowLivestock from "./Pages/Livestock/ShowLivestock";
 import UpdateLivestock from "./Pages/Livestock/UpdateLivestock";
 
+// NutritionalRequirement Module Imports
+import NutritionalRequirementSpeciesForm from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementSpeciesForm";
+import NutritionalRequirementSpeciesList from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementSpeciesList";
+import NutritionalRequirementDetails from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementDetails";
+
+
 
 export default function App() {
   const { user } = useContext(AppContext);
@@ -28,11 +34,26 @@ export default function App() {
     <Route index element={<Home />} />
 
     <Route path="/register" element={user ? <Home/>:<Register />} />
-    <Route path="/login" element={user ? <Home/>:<Login />} />
+    <Route path="/login" element={user ? <Home/>:<Login />} />x
     <Route path="/create" element={user ? <Create/>:<Login />} />
     <Route path="/createlivestock" element={user ? <CreateLivestock/>:<Login />} />
     <Route path="/showlivestock" element={user ? <ShowLivestock/>:<Login />} />
     <Route path="/updatelivestock" element={user ? <UpdateLivestock/>:<Login />} />
+
+
+     {/* NutritionalRequirement Module Routes */}
+     <Route
+            path="/modules/nutritional-requirement/form"
+            element={user ? <NutritionalRequirementSpeciesForm /> : <Login />}
+          />
+          <Route
+            path="/modules/nutritional-requirement/list"
+            element={user ? <NutritionalRequirementSpeciesList /> : <Login />}
+          />
+          <Route
+            path="/modules/nutritional-requirement/details/:id"
+            element={user ? <NutritionalRequirementDetails /> : <Login />}
+          />
 
 
     {/* <Route path="/posts/:id" element={<Show />} />

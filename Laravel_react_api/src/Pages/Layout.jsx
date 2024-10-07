@@ -45,9 +45,9 @@ export default function Layout() {
                         </p>
 
                         
-                <Link to="/createlivestock" className="nav-link c-white" style={{ color: 'white' }}>
+                {/* <Link to="/createlivestock" className="nav-link c-white" style={{ color: 'white' }}>
                 New Livestock
-                </Link>
+                </Link> */}
                         <form onSubmit={handleLogout}>
                             <button className="nav-link">Logout</button>
                         </form>

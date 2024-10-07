@@ -70,6 +70,9 @@ export default function Show() {
     return livestock ? (
         <div key={livestock.id} className="mb-4 border rounded-md border-dashed border-slate-400">
             <h2 className="font-bold text-2xl mb-4">{livestock.type} Details</h2>
+            <span> 
+             
+                </span>
             <table className="table-auto border-collapse border border-slate-400 w-full">
                 <thead>
                     <tr className="bg-gray-100">
