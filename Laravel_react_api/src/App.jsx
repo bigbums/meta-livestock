@@ -14,13 +14,31 @@ import Update from "./Pages/Posts/Update";
 import CreateLivestock from "./pages/Livestock/CreateLivestock";
 import ShowLivestock from "./Pages/Livestock/ShowLivestock";
 import UpdateLivestock from "./Pages/Livestock/UpdateLivestock";
+import LivestockGroupForm from "./Pages/Livestock/group/LiveStockGroupForm";
+import LivestockGroupList from "./Pages/Livestock/group/LivestockGroupList"
+import GroupCriteriaForm from "./Pages/Livestock/group/GroupCriteriaForm";
+import GroupCriteriaList from "./Pages/Livestock/group/GroupCriteriaList";
+import GroupCriteriaDetails from "./Pages/Livestock/group/GroupCriteriaDetails";
+import CriteriaUpdate from "./Pages/Livestock/group/CriteriaUpdate";
+import LivestockGroupDetails from "./Pages/Livestock/group/LivestockGroupDetails";
+import LivestockGroupUpdate from "./Pages/Livestock/group/LivestockGroupUpdate";
 
 // NutritionalRequirement Module Imports
 import NutritionalRequirementSpeciesForm from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementSpeciesForm";
 import NutritionalRequirementSpeciesList from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementSpeciesList";
 import NutritionalRequirementDetails from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementDetails";
+import NutritionalRequirementSpecieUpdate from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementSpecieUpdate"
+
+// Feeding Management Module Imports
+import FeedsForm from "./Pages/Modules/FeedingManagement/FeedsForm"; 
+import FeedTypeForm from "./Pages/Modules/FeedTypes/FeedTypeForm";
+import FeedTypeFormList from "./Pages/Modules/FeedTypes/FeedTypeFormList";
+import FeedTypeFormDetails from "./Pages/Modules/FeedTypes/FeedTypeFormDetails";
+import FeedTypeFormUpdate from "./Pages/Modules/FeedingManagement/FeedTypeFormUpdate";
 
 
+import FeedScheduleForm from "./Pages/Modules/FeedingManagement/FeedScheduleForm";
+import FeedScheduleList from "./Pages/Modules/FeedingManagement/FeedScheduleList";
 
 export default function App() {
   const { user } = useContext(AppContext);
@@ -39,6 +57,14 @@ export default function App() {
     <Route path="/createlivestock" element={user ? <CreateLivestock/>:<Login />} />
     <Route path="/showlivestock" element={user ? <ShowLivestock/>:<Login />} />
     <Route path="/updatelivestock" element={user ? <UpdateLivestock/>:<Login />} />
+    <Route path="/livestockgroupform" element={user ? <LivestockGroupForm /> : <Login />} />    
+    <Route path="/livestockgrouplist" element={user ? <LivestockGroupList /> : <Login />} />
+    <Route path="/livestockgroupedit/:id/edit" element={user ? <LivestockGroupUpdate /> : <Login />} />
+    <Route path="/livestockgroupdetails/:id" element={user ? <LivestockGroupDetails /> : <Login />} />
+    <Route path="/criteriaform" element={user ? <GroupCriteriaForm /> : <Login />} />
+    <Route path="/criterialist" element={user ? <GroupCriteriaList /> : <Login />} />
+    <Route path="/criteriadetails/:id" element={user ? <GroupCriteriaDetails /> : <Login />} />
+    <Route path="/criteriaedit/:id/edit" element={user ? <CriteriaUpdate /> : <Login />} />
 
 
      {/* NutritionalRequirement Module Routes */}
@@ -54,6 +80,29 @@ export default function App() {
             path="/modules/nutritional-requirement/details/:id"
             element={user ? <NutritionalRequirementDetails /> : <Login />}
           />
+          <Route path="/nutritional-requirement/:id/edit" element={<NutritionalRequirementSpecieUpdate />} />
+
+
+          <Route
+            path="/modules/FeedingManagement/FeedsForm"
+            element={user ? <FeedsForm /> : <Login />}
+          />
+
+          <Route
+            path="/modules/FeedTypes/FeedTypeForm"
+            element={user ? <FeedTypeForm /> : <Login />}
+          />
+
+<Route
+            path="/modules/FeedTypes/FeedTypeFormList"
+            element={user ? <FeedTypeFormList /> : <Login />}
+          />
+<Route
+            path="/modules/FeedTypes/FeedTypeFormDetails/:id"
+            element={user ? <FeedTypeFormDetails /> : <Login />}
+          />
+
+<Route path="/feed-types/:id/edit" element={user ?  <FeedTypeFormUpdate /> : <Login/>} />
 
 
     {/* <Route path="/posts/:id" element={<Show />} />
@@ -67,8 +116,18 @@ export default function App() {
 
 
     </Route>
-    
+
+
+
+    <Route path="/feedscheduleform" element={user ? <FeedScheduleForm/>:<Login />} />
+
+    <Route path="/feedschedulelist" element={user ? <FeedScheduleList/>:<Login />} />
+
     </Routes>
+
+   
+    
+    
     </BrowserRouter>
     
   );

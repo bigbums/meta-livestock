@@ -29,6 +29,14 @@ use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
 use App\Http\Controllers\HandlingEventManagementController;
 use App\Http\Controllers\NutritionalRequirementController;
+use App\Http\Controllers\FeedTypeController;
+use App\Http\Controllers\LivestockGroupController;
+use App\Http\Controllers\GroupCriteriaController;
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FeedDistributionController;
+use App\Http\Controllers\FeedScheduleController;
+
+
 
 
 Route::get('/user', function (Request $request) {
@@ -101,6 +109,47 @@ Route::post('/nutritional-requirements', [NutritionalRequirementController::clas
 Route::get('/nutritional-requirements/{id}', [NutritionalRequirementController::class, 'show']);
 Route::put('/nutritional-requirements/{id}', [NutritionalRequirementController::class, 'update']);
 Route::delete('/nutritional-requirements/{id}', [NutritionalRequirementController::class, 'destroy']);
+
+
+Route::get('/feed-types', [FeedTypeController::class, 'index']);
+Route::post('/feed-types', [FeedTypeController::class, 'store']);
+Route::get('/feed-types/{id}', [FeedTypeController::class, 'show']);
+Route::put('/feed-types/{id}', [FeedTypeController::class, 'update']);
+Route::delete('/feed-types/{id}', [FeedTypeController::class, 'destroy']);
+
+
+Route::get('/livestock-groups', [LivestockGroupController::class, 'index']);        // List all livestock groups
+Route::post('/livestock-groups', [LivestockGroupController::class, 'storePivot']);       // Create a new livestock group
+Route::get('/livestock-groups/{id}', [LivestockGroupController::class, 'show']);    // Show a specific livestock group
+Route::put('/livestock-groups/{id}', [LivestockGroupController::class, 'update']);  // Update a specific livestock group
+Route::delete('/livestock-groups/{id}', [LivestockGroupController::class, 'destroy']); // Delete a livestock group
+
+Route::post('/livestock-groups/{groupId}/add-livestock', [LivestockGroupController::class, 'addLivestockToGroup']);
+
+
+Route::get('/groups/{groupId}/criteria', [GroupCriteriaController::class, 'index']);
+Route::post('/groups/{groupId}/criteria', [GroupCriteriaController::class, 'update']);
+
+Route::get('/groups-criteria', [GroupCriteriaController::class, 'index']);        // List all livestock criteria
+Route::post('/groups-criteria', [GroupCriteriaController::class, 'store']);       // Create a new livestock group
+Route::get('/groups-criteria/{id}', [GroupCriteriaController::class, 'show']);    // Show a specific livestock group
+Route::put('/groups-criteria/{id}', [GroupCriteriaController::class, 'update']);  // Update a specific livestock group
+Route::delete('/groups-criteria/{id}', [GroupCriteriaController::class, 'destroy']); // Delete a livestock group
+
+
+// Routes for Feed
+Route::apiResource('feeds', FeedController::class);
+
+// Routes for Feed Distribution
+Route::apiResource('feed-distributions', FeedDistributionController::class);
+
+//Route::apiResource('feed-schedules', FeedScheduleController::class);
+
+Route::get('/feed-schedules', [FeedScheduleController::class, 'index']);
+Route::post('/feed-schedules', [FeedScheduleController::class, 'store']);
+Route::get('/feed-schedules/{id}', [FeedScheduleController::class, 'show']);
+Route::put('/feed-schedules/{id}', [FeedScheduleController::class, 'update']);
+Route::delete('/feed-schedules/{id}', [FeedScheduleController::class, 'destroy']);
 
 
 

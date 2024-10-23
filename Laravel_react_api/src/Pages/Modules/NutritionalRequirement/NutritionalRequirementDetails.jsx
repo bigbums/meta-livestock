@@ -29,6 +29,7 @@ export default function NutritionalRequirementDetails() {
 
     fetchNutritionalRequirement();
   }, [id]);
+  console.log(id)
 
   if (loading) {
     return <div>Loading...</div>;
@@ -43,18 +44,55 @@ export default function NutritionalRequirementDetails() {
   }
 
   return (
-    <div className="nutritional-requirement-details">
-      <h2>Nutritional Requirement Details</h2>
-      <p><strong>Species:</strong> {nutritionalRequirement.species.name}</p>
-      <p><strong>Breed:</strong> {nutritionalRequirement.breed ? nutritionalRequirement.breed.name : 'N/A'}</p>
-      <p><strong>Age Range:</strong> {nutritionalRequirement.age_range}</p>
-      <p><strong>Weight Range:</strong> {nutritionalRequirement.weight_range}</p>
-      <p><strong>Health Status:</strong> {nutritionalRequirement.health_status}</p>
-      <p><strong>Production Type:</strong> {nutritionalRequirement.production_type}</p>
-      <p><strong>Requirement Type:</strong> {nutritionalRequirement.requirement_type}</p>
-      <p><strong>Requirement Value:</strong> {nutritionalRequirement.requirement_value}</p>
-      
-      <Link to="/nutritional-requirements">Back to List</Link>
+    <div className="nutritional-requirement-details mb-4 border rounded-md border-dashed border-slate-400 p-4">
+      <h2 className="font-bold text-2xl mb-4">Nutritional Requirement Details</h2>
+      <table className="min-w-full table-row-group border-collapse border border-slate-400">
+        <tbody>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Species</th>
+            <td className="p-2 border border-slate-300">
+              {nutritionalRequirement.species ? nutritionalRequirement.species.name : 'Unknown'}
+            </td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Breed</th>
+            <td className="p-2 border border-slate-300">
+              {nutritionalRequirement.breed ? nutritionalRequirement.breed.name : 'N/A'}
+            </td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Age Range</th>
+            <td className="p-2 border border-slate-300">{nutritionalRequirement.age_range}</td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Weight Range</th>
+            <td className="p-2 border border-slate-300">{nutritionalRequirement.weight_range}</td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Health Status</th>
+            <td className="p-2 border border-slate-300">{nutritionalRequirement.health_status}</td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Production Type</th>
+            <td className="p-2 border border-slate-300">{nutritionalRequirement.production_type}</td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Requirement Type</th>
+            <td className="p-2 border border-slate-300">{nutritionalRequirement.requirement_type}</td>
+          </tr>
+          <tr className="border-b">
+            <th className="text-left p-2 border border-slate-300 bg-gray-200">Requirement Value</th>
+            <td className="p-2 border border-slate-300">{nutritionalRequirement.requirement_value}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <Link
+        to="/modules/nutritional-requirement/list"
+        className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block"
+      >
+        Back to List
+      </Link>
     </div>
   );
-}
+}  
