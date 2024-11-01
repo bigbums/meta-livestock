@@ -55,4 +55,9 @@ class LivestockGroup extends Model
     {
         return $this->belongsToMany(GroupCriteria::class, 'group_criteria_livestock_group', 'livestock_group_id', 'group_criteria_id');
     }
+
+    public function livestock()
+    {
+        return $this->belongsToMany(Livestock::class, 'livestock_group_livestock', 'livestock_group_id', 'livestock_id');
+    }
 }

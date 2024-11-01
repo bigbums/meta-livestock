@@ -32,7 +32,7 @@ class LivestockController extends Controller
         // $livestocks = Livestock::all();
         // return response()->json($livestocks);
 
-        $livestock = Livestock::with(['owner'])->orderBy('id', 'desc')->get();
+        $livestock = Livestock::with(['owner', 'species', 'breed'])->orderBy('id', 'desc')->get();
         return response()->json($livestock);
     }
 
@@ -191,5 +191,13 @@ class LivestockController extends Controller
     {
         Livestock::destroy($id);
         return response()->json(null, 204);
+    }
+
+    public function getLivestockBySpecies(Request $request)
+    {
+        $speciesId = $request->query('species_id');
+        $livestock = Livestock::where('species_id', $speciesId)->get();
+
+        return response()->json($livestock);
     }
 }

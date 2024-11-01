@@ -13,8 +13,8 @@ class FeedScheduleController extends Controller
     // Fetch all feed schedules
     public function index()
     {
-        $feedSchedules = FeedSchedule::with(['livestockGroup', 'feed_type', 'feedDistributions'])->get();
-        //$feedtype = FeedType::where()all();
+        $feedSchedules = FeedSchedule::with(['livestockGroup', 'feedType', 'feedDistributions'])->get();
+        // $feedSchedules = FeedSchedule::all();
 
         return response()->json($feedSchedules);
     }
@@ -46,7 +46,8 @@ class FeedScheduleController extends Controller
     // Show a specific feed schedule
     public function show($id)
     {
-        $feedSchedule = FeedSchedule::with(['livestockGroup', 'feed', 'feedDistributions'])->findOrFail($id);
+        //$feedSchedule = FeedSchedule::with(['livestockGroup', 'feedType', 'feedDistributions'])->findOrFail($id);
+        $feedSchedule = FeedSchedule::with(['livestockGroup', 'feedType', 'feedDistributions'])->findOrFail($id);
         return response()->json($feedSchedule);
     }
 

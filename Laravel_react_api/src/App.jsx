@@ -22,6 +22,7 @@ import GroupCriteriaDetails from "./Pages/Livestock/group/GroupCriteriaDetails";
 import CriteriaUpdate from "./Pages/Livestock/group/CriteriaUpdate";
 import LivestockGroupDetails from "./Pages/Livestock/group/LivestockGroupDetails";
 import LivestockGroupUpdate from "./Pages/Livestock/group/LivestockGroupUpdate";
+import AddLivestockToGroup from "./Pages/Livestock/group/AddToLiveStock";
 
 // NutritionalRequirement Module Imports
 import NutritionalRequirementSpeciesForm from "./Pages/Modules/NutritionalRequirement/NutritionalRequirementSpeciesForm";
@@ -39,6 +40,14 @@ import FeedTypeFormUpdate from "./Pages/Modules/FeedingManagement/FeedTypeFormUp
 
 import FeedScheduleForm from "./Pages/Modules/FeedingManagement/FeedScheduleForm";
 import FeedScheduleList from "./Pages/Modules/FeedingManagement/FeedScheduleList";
+import FeedScheduleDetails from "./Pages/Modules/FeedingManagement/FeedScheduleDetails";
+import FeedScheduleUpdate from "./Pages/Modules/FeedingManagement/FeedScheduleUpdate";
+
+
+import FeedDistributionForm from "./Pages/Modules/FeedingManagement/FeedDistribution";
+import FeedDistributionList from "./Pages/Modules/FeedingManagement/FeedDistributionList";
+import FeedDistributionDetails from "./Pages/Modules/FeedingManagement/FeedDistributionDetails";
+import FeedDistributionUpdate from "./Pages/Modules/FeedingManagement/FeedDistributionUpdate";
 
 export default function App() {
   const { user } = useContext(AppContext);
@@ -61,6 +70,10 @@ export default function App() {
     <Route path="/livestockgrouplist" element={user ? <LivestockGroupList /> : <Login />} />
     <Route path="/livestockgroupedit/:id/edit" element={user ? <LivestockGroupUpdate /> : <Login />} />
     <Route path="/livestockgroupdetails/:id" element={user ? <LivestockGroupDetails /> : <Login />} />
+    <Route path="/addtolivestock" element={user ? <AddLivestockToGroup /> : <Login />} />
+    
+
+
     <Route path="/criteriaform" element={user ? <GroupCriteriaForm /> : <Login />} />
     <Route path="/criterialist" element={user ? <GroupCriteriaList /> : <Login />} />
     <Route path="/criteriadetails/:id" element={user ? <GroupCriteriaDetails /> : <Login />} />
@@ -81,6 +94,26 @@ export default function App() {
             element={user ? <NutritionalRequirementDetails /> : <Login />}
           />
           <Route path="/nutritional-requirement/:id/edit" element={<NutritionalRequirementSpecieUpdate />} />
+          <Route path="/modules/FeedingManagement/feedscheduleform" element={user ? <FeedScheduleForm/>:<Login />} />
+          <Route path="/modules/FeedingManagement/feedschedulelist" element={user ? <FeedScheduleList/>:<Login />} />
+          <Route path="/feedscheduleDetails/:id" element={user ? <FeedScheduleDetails/>:<Login />} />
+          <Route path="/feedScheduleUpdate/:id/edit" element={user ? <FeedScheduleUpdate /> : <Login />} />
+
+
+         <Route
+            path="/feedDistributionForm"
+            element={user ? <FeedDistributionForm /> : <Login />}
+          />
+
+        <Route
+            path="/feedDistributionlist"
+            element={user ? <FeedDistributionList /> : <Login />}
+          />
+<Route path="/feedDistributionDetails/:id" element={user ? <FeedDistributionDetails /> : <Login />} />
+<Route path="/feedDistribution/:id/edit" element={user ? <FeedDistributionUpdate /> : <Login />} />
+
+
+
 
 
           <Route
@@ -119,9 +152,8 @@ export default function App() {
 
 
 
-    <Route path="/feedscheduleform" element={user ? <FeedScheduleForm/>:<Login />} />
+  
 
-    <Route path="/feedschedulelist" element={user ? <FeedScheduleList/>:<Login />} />
 
     </Routes>
 

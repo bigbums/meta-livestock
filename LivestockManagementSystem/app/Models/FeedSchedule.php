@@ -24,9 +24,9 @@ class FeedSchedule extends Model
         return $this->belongsTo(LivestockGroup::class);
     }
 
-    public function feed()
+    public function feedType()
     {
-        return $this->belongsTo(Feed::class);
+        return $this->belongsTo(FeedType::class);
     }
 
     public function feedDistributions()

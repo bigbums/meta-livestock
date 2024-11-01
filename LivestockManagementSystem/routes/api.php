@@ -35,9 +35,8 @@ use App\Http\Controllers\GroupCriteriaController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FeedDistributionController;
 use App\Http\Controllers\FeedScheduleController;
-
-
-
+use App\Models\FeedDistribution;
+use App\Http\Controllers\BreedingProgramController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -64,7 +63,7 @@ Route::prefix('livestocks')->group(function () {
     Route::get('/list', [LivestockController::class, 'listLivestock']);
     Route::get('/detail/{id}', [LivestockController::class, 'showLivestock']);
     Route::post('/store', [LivestockController::class, 'storeLivestock']);
-    Route::get('/species', [LivestockController::class, 'getSpecies']);
+    // Route::get('/species', [LivestockController::class, 'getSpecies']);
     Route::get('/species/{species_id}/breeds', [LivestockController::class, 'getBreeds']);
     Route::put('/update/{id}', [LivestockController::class, 'updateLivestock']);
     Route::put('/update/form/{id}', [LivestockController::class, 'updateLivestockForm']);
@@ -141,9 +140,17 @@ Route::delete('/groups-criteria/{id}', [GroupCriteriaController::class, 'destroy
 Route::apiResource('feeds', FeedController::class);
 
 // Routes for Feed Distribution
-Route::apiResource('feed-distributions', FeedDistributionController::class);
+// Route::apiResource('feed-distributions', FeedDistributionController::class);
 
 //Route::apiResource('feed-schedules', FeedScheduleController::class);
+
+Route::get('/feed-distribution', [FeedDistributionController::class, 'index']);
+Route::post('/feed-distribution', [FeedDistributionController::class, 'store']);
+Route::get('/feed-distribution/{id}', [FeedDistributionController::class, 'show']);
+Route::put('/feed-distribution/{id}', [FeedDistributionController::class, 'update']);
+Route::delete('/feed-distribution/{id}', [FeedDistributionController::class, 'destroy']);
+
+
 
 Route::get('/feed-schedules', [FeedScheduleController::class, 'index']);
 Route::post('/feed-schedules', [FeedScheduleController::class, 'store']);
@@ -153,16 +160,32 @@ Route::delete('/feed-schedules/{id}', [FeedScheduleController::class, 'destroy']
 
 
 
+Route::get('/species', [LivestockGroupController::class, 'getSpeciesList']);
+Route::get('/livestock/species/{species}', [LivestockGroupController::class, 'getLivestockBySpecies']);
+// Route::post('/livestock-groups/{group}/add-livestock', [LivestockGroupController::class, 'addLivestockToGroup']);
+
+Route::post('/livestock-groups/add-livestock', [LivestockGroupController::class, 'addLivestockToGroup']);
+Route::get('/livestock', [LivestockController::class, 'getLivestockBySpecies']);
+
+
+Route::get('/breeding-programs', [BreedingProgramController::class, 'index']);
+Route::get('/breeding-programs/{id}', [BreedingProgramController::class, 'show']);
+Route::post('/breeding-programs', [BreedingProgramController::class, 'store']);
+Route::put('/breeding-programs/{id}', [BreedingProgramController::class, 'update']);
+Route::delete('/breeding-programs/{id}', [BreedingProgramController::class, 'destroy']);
+
+
+
 Route::apiResource('inventories', InventoryController::class);
 Route::apiResource('health-records', HealthRecordController::class);
 
-Route::prefix('breeding-management')->group(function () {
-    Route::get('/listBreedbirth', [BreedingManagementController::class, 'listBreedbirth']);
-    Route::get('/showBreedbirth/{id}', [BreedingManagementController::class, 'showBreedbirth']);
-    Route::post('/storeBreedbirth', [BreedingManagementController::class, 'storeBreedbirth']);
-    Route::put('/updateBreedbirth/{id}', [BreedingManagementController::class, 'updateBreedbirth']);
-    Route::delete('/destroyBreedbirth/{id}', [BreedingManagementController::class, 'destroyBreedbirth']);
-});
+// Route::prefix('breeding-management')->group(function () {
+//     Route::get('/listBreedbirth', [BreedingManagementController::class, 'listBreedbirth']);
+//     Route::get('/showBreedbirth/{id}', [BreedingManagementController::class, 'showBreedbirth']);
+//     Route::post('/storeBreedbirth', [BreedingManagementController::class, 'storeBreedbirth']);
+//     Route::put('/updateBreedbirth/{id}', [BreedingManagementController::class, 'updateBreedbirth']);
+//     Route::delete('/destroyBreedbirth/{id}', [BreedingManagementController::class, 'destroyBreedbirth']);
+// });
 
 Route::prefix('feeding-management')->group(function () {
     Route::get('/listFeeding', [FeedingManagementController::class, 'listFeeding']);

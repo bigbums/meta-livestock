@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('feed_distributions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('feed_schedule_id')->constrained()->onDelete('cascade'); // Foreign key to reference feed schedules
+            $table->unsignedBigInteger('feed_schedule_id')->constrained()->onDelete('cascade'); // Foreign key to reference feed schedules
+            $table->unsignedBigInteger('livestock_group_id')->nullable()->constrained('livestock_groups')->onDelete('set null');
+            $table->unsignedBigInteger('livestock_id')->nullable()->constrained('livestock')->onDelete('set null');
             $table->timestamp('distribution_time'); // Time feed was actually distributed
+            $table->decimal('variance', 8, 2)->nullable();
             $table->decimal('actual_quantity_distributed', 10, 2); // Actual quantity of feed distributed
             $table->string('distributed_by')->nullable(); // Person or system that performed the distribution
             $table->string('feed_by_user')->nullable(); // User or employee distributing the feed
+            $table->text('comment')->nullable(); // User or employee distributing the feed
 
             $table->timestamps();
         });

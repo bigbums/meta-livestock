@@ -81,7 +81,7 @@ return (
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Group name</th>
+                {/* <th className="px-4 py-2 border">Group name</th> */}
                 <th className="px-4 py-2 border">Criteria</th>
                 <th className="px-4 py-2 border">Value</th>
                 <th className="px-4 py-2 border">Actions</th>
@@ -90,7 +90,7 @@ return (
             <tbody>
               {groupCriteria.map((groupCriteria) => (
                   <tr key={groupCriteria.id} className="hover:bg-gray-100">
-                    <td className="px-4 py-2 border">{groupCriteria.livestock_group_id || 'No description'}</td>
+                    {/* <td className="px-4 py-2 border">{groupCriteria.livestock_group_id || 'No description'}</td> */}
                     <td className="px-4 py-2 border">{groupCriteria.key || 'No description'}</td>
                   <td className="px-4 py-2 border">{groupCriteria.value}</td>
                   <td className="px-4 py-2 border text-center">

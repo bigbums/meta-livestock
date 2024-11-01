@@ -20,6 +20,8 @@ export default function FeedScheduleList() {
 
         if (response.ok) {
           setFeedSchedules(data);
+          console.log(data);
+          
         } else {
           console.error('API error:', data);
           setError('No available data');
@@ -65,35 +67,42 @@ export default function FeedScheduleList() {
       {error && <div className="text-red-500">{error}</div>}
 
       {feedSchedules.length > 0 ? (
+        
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr>
-                <th className="px-4 py-2 border">Feed Schedule Name</th>
-                <th className="px-4 py-2 border">Description</th>
+                <th className="px-4 py-2 border">Quantity</th>
+                <th className="px-4 py-2 border">Approved Qty</th>
+                <th className="px-4 py-2 border">Approver</th>
+                <th className="px-4 py-2 border">Location</th>
+                <th className="px-4 py-2 border">Frequency</th>
+                <th className="px-4 py-2 border">Occurence</th>
+                <th className="px-4 py-2 border">Time of day</th>
                 <th className="px-4 py-2 border">Actions</th>
               </tr>
             </thead>
             <tbody>
               {feedSchedules.map((feedType) => (
+
                 <tr key={feedType.id} className="hover:bg-gray-100">
-                  <td className="px-4 py-2 border">{feedSchedules.quantity}</td>
-                  <td className="px-4 py-2 border">{feedSchedules.approved_quantity || 'No description'}</td>
-                  <td className="px-4 py-2 border">{feedSchedules.approver || 'No description'}</td>
-                  <td className="px-4 py-2 border">{feedSchedules.feed_location || 'No description'}</td>
-                  <td className="px-4 py-2 border">{feedSchedules.frequency || 'No description'}</td>
-                  <td className="px-4 py-2 border">{feedSchedules.occurrence || 'No description'}</td>
-                  <td className="px-4 py-2 border">{feedSchedules.time_of_day || 'No description'}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].quantity}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].approved_quantity || 'No description'}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].approver || 'No description'}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].feed_location || 'No description'}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].frequency || 'No description'}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].occurrence || 'No description'}</td>
+                  <td className="px-4 py-2 border">{feedSchedules[0].time_of_day || 'No description'}</td>
                   
                   <td className="px-4 py-2 border text-center">
                     <Link
-                      to={`/modules/FeedingManagement/FeedScheduleDetails/${feedSchedules.id}`}
+                      to={`/feedscheduleDetails/${feedType.id}`}
                       className="text-blue-500 hover:underline mx-2"
                     >
                       View
                     </Link>
                     <Link
-                      to={`/feed-schedules/${feedSchedules.id}/edit`}
+                      to={`/feedScheduleUpdate/${feedType.id}/edit`}
                       className="text-green-500 hover:underline mx-2"
                     >
                       Edit

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Species;
+use App\Models\Livestock;
 use Illuminate\Http\Request;
 use App\Models\GroupCriteria;
 use App\Models\LivestockGroup;
@@ -104,7 +106,7 @@ class LivestockGroupController extends Controller
     public function show($id)
     {
         // Find the livestock group by its ID
-        $livestockGroup = LivestockGroup::findOrFail($id);
+        $livestockGroup = LivestockGroup::with(['livestock'])->findOrFail($id);
         return response()->json($livestockGroup);
     }
 
@@ -144,32 +146,32 @@ class LivestockGroupController extends Controller
     }
 
 
-    public function addLivestockToGroup(Request $request, $groupId)
-    {
-        $group = LivestockGroup::findOrFail($groupId);
+    // public function addLivestockToGroup(Request $request, $groupId)
+    // {
+    //     $group = LivestockGroup::findOrFail($groupId);
 
-        // Validate the request
-        $validatedData = $request->validate([
-            'livestock_ids' => 'required|array',
-            'livestock_ids.*' => 'exists:livestock,id', // Ensure all livestock IDs exist
-            'criteria.species' => 'nullable|exists:species,id',
-            'criteria.breed' => 'nullable|string',
-            'criteria.ageRange' => 'nullable|string',
-            'criteria.weightRange' => 'nullable|string',
-        ]);
+    //     // Validate the request
+    //     $validatedData = $request->validate([
+    //         'livestock_ids' => 'required|array',
+    //         'livestock_ids.*' => 'exists:livestock,id', // Ensure all livestock IDs exist
+    //         'criteria.species' => 'nullable|exists:species,id',
+    //         'criteria.breed' => 'nullable|string',
+    //         'criteria.ageRange' => 'nullable|string',
+    //         'criteria.weightRange' => 'nullable|string',
+    //     ]);
 
-        // Attach livestock to the group
-        foreach ($validatedData['livestock_ids'] as $livestockId) {
-            $group->livestock()->attach($livestockId, [
-                'species_id' => $validatedData['criteria']['species'] ?? null,
-                'breed' => $validatedData['criteria']['breed'] ?? null,
-                'age_range' => $validatedData['criteria']['ageRange'] ?? null,
-                'weight_range' => $validatedData['criteria']['weightRange'] ?? null,
-            ]);
-        }
+    // Attach livestock to the group
+    //     foreach ($validatedData['livestock_ids'] as $livestockId) {
+    //         $group->livestock()->attach($livestockId, [
+    //             'species_id' => $validatedData['criteria']['species'] ?? null,
+    //             'breed' => $validatedData['criteria']['breed'] ?? null,
+    //             'age_range' => $validatedData['criteria']['ageRange'] ?? null,
+    //             'weight_range' => $validatedData['criteria']['weightRange'] ?? null,
+    //         ]);
+    //     }
 
-        return response()->json(['message' => 'Livestock added to group successfully']);
-    }
+    //     return response()->json(['message' => 'Livestock added to group successfully']);
+    // }
 
     //Sync Criteria with Livestock Group 
 
@@ -270,5 +272,88 @@ class LivestockGroupController extends Controller
                 'message' => 'Failed to create livestock group: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+
+    // Fetch species list
+    public function getSpeciesList()
+    {
+        $species = Species::all();
+        return response()->json($species);
+    }
+
+    // Fetch livestock by species
+    public function getLivestockBySpecies($speciesId)
+    {
+        $livestock = Livestock::where('species_id', $speciesId)->get();
+        return response()->json($livestock);
+    }
+
+    // // Add livestock to group
+    // public function addLivestockToGroup(Request $request, $groupId)
+    // {
+    //     // Validate the request
+    //     $validated = $request->validate([
+    //         'livestock_ids' => 'required|array',
+    //         'livestock_ids.*' => 'exists:livestock,id',
+    //     ]);
+
+    //     // Find the LivestockGroup by ID
+    //     $group = LivestockGroup::findOrFail($groupId);
+
+    //     // Fetch all livestock IDs from the request
+    //     $livestockIds = $validated['livestock_ids'];
+
+    //     // Attach the livestock to the group (assuming a many-to-many relationship)
+    //     $group->livestock()->syncWithoutDetaching($livestockIds);
+
+    //     return response()->json([
+    //         'message' => 'Livestock successfully added to group',
+    //         'group' => $group->load('livestock')  // Load the livestock relations
+    //     ], 200);
+    // }
+
+    // public function addLivestockToGroup(Request $request, $groupId)
+    // {
+    //     // Validate incoming request to ensure livestock_id is provided
+    //     $request->validate([
+    //         'livestock_id' => 'required|exists:livestocks,id',
+    //     ]);
+
+    //     // Find the livestock group by ID
+    //     // $group = LivestockGroup::findOrFail($groupId);
+
+    //     // Attach the livestock to the group
+    //     // $group->livestock()->attach($request->livestock_id);
+
+    //     // Return a response (can be adjusted based on your app's needs)
+    //     return response()->json([
+    //         // 'message' => 'Livestock successfully added to the group.',
+    //         'groupId' => $groupId
+    //     ], 200);
+    // }
+
+
+    public function addLivestockToGroup(Request $request)
+    {
+        // Validate incoming request to ensure livestock_id and group_id are provided
+        $request->validate([
+            'livestock_id' => 'required|exists:livestocks,id',
+            'livestock_group_id' => 'required|exists:livestock_groups,id', // Validate group_id
+        ]);
+
+        $groupId = $request->livestock_group_id; // Get group_id from request body
+
+        // Find the livestock group by ID
+        $group = LivestockGroup::findOrFail($groupId);
+
+        // Attach the livestock to the group
+        $group->livestock()->attach($request->livestock_id);
+
+        // Return a response
+        return response()->json([
+            'message' => 'Livestock successfully added to the group.',
+            'groupId' => $groupId,
+        ], 200);
     }
 }

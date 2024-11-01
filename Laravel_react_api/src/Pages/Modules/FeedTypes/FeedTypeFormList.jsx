@@ -168,6 +168,7 @@ export default function FeedTypeFormList() {
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr>
+                <th className="px-4 py-2 border">Feed Type Id</th>
                 <th className="px-4 py-2 border">Feed Type Name</th>
                 <th className="px-4 py-2 border">Description</th>
                 <th className="px-4 py-2 border">Actions</th>
@@ -176,7 +177,8 @@ export default function FeedTypeFormList() {
             <tbody>
               {feedTypes.map((feedType) => (
                 <tr key={feedType.id} className="hover:bg-gray-100">
-                  <td className="px-4 py-2 border">{feedType.name}</td>
+                  <td className="px-4 py-2 border">{feedType.id}</td>
+                  <td className="px-4 py-2 border">{feedType.feed_type_name}</td>
                   <td className="px-4 py-2 border">{feedType.feed_type_desc || 'No description'}</td>
                   <td className="px-4 py-2 border text-center">
                     <Link

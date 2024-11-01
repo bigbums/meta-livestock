@@ -18,6 +18,8 @@ export default function Show() {
             const data = await res.json();
             
             if (res.ok) {
+                console.log(data);
+                
                 setLivestock(data.livestock); // Set the fetched livestock
             } else {
                 setError("Failed to fetch livestock details"); // Set error message

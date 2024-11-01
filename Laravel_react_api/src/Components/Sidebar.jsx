@@ -19,7 +19,7 @@ export default function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/feedscheduleform" className="text-blue-600">
+          <Link to="/modules/feedingmanagement/feedschedulelist" className="text-blue-600">
             Feeding Schedules Management
           </Link>
         </li>
@@ -29,7 +29,12 @@ export default function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/modules/breeding-management/list" className="text-blue-600">
+          <Link to="/feedDistributionlist" className="text-blue-600">
+            Feed Distribution
+          </Link>
+        </li>
+        <li>
+          <Link to="/modules/BreedingManagement/BreedingProgramForm" className="text-blue-600">
             Breeding Management
           </Link>
         </li>

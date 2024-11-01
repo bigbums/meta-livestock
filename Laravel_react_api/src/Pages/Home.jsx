@@ -116,6 +116,7 @@ import { Link, useLocation } from "react-router-dom";
 export default function Home() {
     const [livestock, setLivestock] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to manage dropdown visibility
+    const [groupDropdown, setGroupDropdown] = useState(false)
     const location = useLocation();
     const success = location.state?.success;
 
@@ -126,6 +127,8 @@ export default function Home() {
 
         if (res.ok) {
             setLivestock(data);
+            console.log(data);
+            
         }
     }
 
@@ -136,6 +139,10 @@ export default function Home() {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    const toggleGroupDropDown = () => {
+        setGroupDropdown(!groupDropdown)
+    }
 
     return (
         <>
@@ -166,9 +173,26 @@ export default function Home() {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="/livestockgrouplist" onClick={toggleDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        {/* <Link to="/livestockgrouplist" onClick={toggleGroupDropDown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                             Livestock Group
-                                        </Link>
+                                        </Link> */}
+                                        <li onClick={toggleGroupDropDown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Group</li>
+                                        {groupDropdown && (
+                                            <div className="relative z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                                <ul className="py-1">
+                                                    <li>
+                                                        <Link to="/livestockgrouplist" onClick={toggleGroupDropDown} className="block px-4 py-2 text-sm text-blue-700 hover:bg-gray-100">
+                                                            Livestock Group
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/addtolivestock" onClick={toggleGroupDropDown} className="block px-4 py-2 text-sm text-blue-700 hover:bg-gray-100">
+                                                           Add to Livestock
+                                                        </Link>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        )}
                                     </li>
                                     <li>
                                         <Link to="/criterialist" onClick={toggleDropdown} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -194,23 +218,26 @@ export default function Home() {
                                     <th className="px-4 py-2 border">Herd ID</th>
                                     <th className="px-4 py-2 border">Owner Name</th>
                                     <th className="px-4 py-2 border">Location</th>
+                                    <th className="px-4 py-2 border">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {livestock.map((livestock) => (
-                                    <tr key={livestock.id}>
-                                        <td className="px-4 py-2 border">{livestock.tag_id}</td>
-                                        <td className="px-4 py-2 border">{livestock.type}</td>
-                                        <td className="px-4 py-2 border">{livestock.species || 'N/A'}</td>
-                                        <td className="px-4 py-2 border">{livestock.breed || 'N/A'}</td>
-                                        <td className="px-4 py-2 border">{new Date(livestock.date_of_birth).toLocaleDateString()}</td>
-                                        <td className="px-4 py-2 border">{livestock.gender}</td>
-                                        <td className="px-4 py-2 border">{livestock.health_status || 'Unknown'}</td>
-                                        <td className="px-4 py-2 border">{livestock.herd_id}</td>
-                                        <td className="px-4 py-2 border">{livestock.owner.firstname}</td>
+                                {livestock.map((livestockItem) => (
+                                    
+                                    <tr key={livestockItem.id}>
+                                        <td className="px-4 py-2 border">{livestockItem.tag_id}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.type}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.species.name || 'N/A'}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.breed.name || 'N/A'}</td>
+                                        <td className="px-4 py-2 border">{new Date(livestockItem.date_of_birth).toLocaleDateString()}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.gender}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.health_status || 'N/A'}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.herd_id}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.owner.firstname}</td>
+                                        <td className="px-4 py-2 border">{livestockItem.owner.location || 'N/A'}</td>
                                         <td className="px-4 py-2 border">
                                             <Link
-                                                to={`/api/livestocks/detail/${livestock.id}`}
+                                                to={`/api/livestocks/detail/${livestockItem.id}`}
                                                 className="bg-blue-500 text-white text-sm rounded-lg px-3 py-1"
                                             >
                                                 Read more ...

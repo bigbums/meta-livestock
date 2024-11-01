@@ -9,6 +9,7 @@ class Livestock extends Model
 {
     use HasFactory;
 
+    protected $table = 'livestocks';
     protected $fillable = [
         'name',
         'species',
@@ -93,5 +94,10 @@ class Livestock extends Model
     public function treatmentPlans()
     {
         return $this->hasMany(Treatment::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(LivestockGroup::class, 'livestock_group_livestock', 'livestock_id', 'group_id');
     }
 }
