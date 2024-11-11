@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('breeding_programs', function (Blueprint $table) {
             $table->id();
-            $table->string('program_name');
+            $table->string('program_name')->unique();
             $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();

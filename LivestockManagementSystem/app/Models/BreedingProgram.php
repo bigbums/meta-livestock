@@ -11,7 +11,7 @@ class BreedingProgram extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['program_name', 'description', 'start_date', 'end_date', 'target_offspring_count', 'livestock_group_id'];
+    protected $fillable = ['program_name', 'description', 'objective', 'start_date', 'end_date', 'target_offspring_count', 'livestock_group_id'];
 
     public function livestockGroup()
     {

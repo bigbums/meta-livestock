@@ -2,11 +2,13 @@
 
 use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Models\FeedDistribution;
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FarmController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -16,27 +18,26 @@ use App\Http\Controllers\UsageController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\SpeciesController;
 use App\Http\Controllers\BreedingController;
+use App\Http\Controllers\FeedTypeController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PedigreeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LivestockController;
 use App\Http\Controllers\PrivilegeController;
+use App\Http\Controllers\FeedScheduleController;
 use App\Http\Controllers\HealthRecordController;
+use App\Http\Controllers\BreedingGroupController;
+use App\Http\Controllers\GroupCriteriaController;
 use App\Http\Controllers\RolePrivilegeController;
+use App\Http\Controllers\LivestockGroupController;
+use App\Http\Controllers\BreedingProgramController;
 use App\Http\Controllers\DiseaseIncidentController;
+use App\Http\Controllers\FeedDistributionController;
 use App\Http\Controllers\FeedingManagementController;
 use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
-use App\Http\Controllers\HandlingEventManagementController;
 use App\Http\Controllers\NutritionalRequirementController;
-use App\Http\Controllers\FeedTypeController;
-use App\Http\Controllers\LivestockGroupController;
-use App\Http\Controllers\GroupCriteriaController;
-use App\Http\Controllers\FeedController;
-use App\Http\Controllers\FeedDistributionController;
-use App\Http\Controllers\FeedScheduleController;
-use App\Models\FeedDistribution;
-use App\Http\Controllers\BreedingProgramController;
+use App\Http\Controllers\HandlingEventManagementController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -61,6 +62,10 @@ Route::prefix('livestocks')->group(function () {
 
     Route::post('/user', [LivestockController::class, 'user']);
     Route::get('/list', [LivestockController::class, 'listLivestock']);
+
+
+
+    Route::get('/listWithSpecies', [LivestockController::class, 'listLivestockWithSpecies']);
     Route::get('/detail/{id}', [LivestockController::class, 'showLivestock']);
     Route::post('/store', [LivestockController::class, 'storeLivestock']);
     // Route::get('/species', [LivestockController::class, 'getSpecies']);
@@ -159,21 +164,34 @@ Route::put('/feed-schedules/{id}', [FeedScheduleController::class, 'update']);
 Route::delete('/feed-schedules/{id}', [FeedScheduleController::class, 'destroy']);
 
 
+//we created this route for the breeding management to get livestock
+Route::get('/species/{speciesId}/livestock', [LivestockController::class, 'getLivestockBySpeciesId']);
 
 Route::get('/species', [LivestockGroupController::class, 'getSpeciesList']);
 Route::get('/livestock/species/{species}', [LivestockGroupController::class, 'getLivestockBySpecies']);
 // Route::post('/livestock-groups/{group}/add-livestock', [LivestockGroupController::class, 'addLivestockToGroup']);
 
 Route::post('/livestock-groups/add-livestock', [LivestockGroupController::class, 'addLivestockToGroup']);
-Route::get('/livestock', [LivestockController::class, 'getLivestockBySpecies']);
+// Route::get('/livestock', [LivestockController::class, 'getLivestockBySpecies']);
 
 
+
+Route::get('/breeding-group-programs', [BreedingProgramController::class, 'indexBreedingGroup']);
 Route::get('/breeding-programs', [BreedingProgramController::class, 'index']);
 Route::get('/breeding-programs/{id}', [BreedingProgramController::class, 'show']);
 Route::post('/breeding-programs', [BreedingProgramController::class, 'store']);
 Route::put('/breeding-programs/{id}', [BreedingProgramController::class, 'update']);
 Route::delete('/breeding-programs/{id}', [BreedingProgramController::class, 'destroy']);
 
+
+// Route::get('/breeding-groups', [BreedingProgramController::class, 'indexBreedingGroup']);
+use App\Http\Controllers\BreedingGroupManagerController;
+
+Route::get('/breeding-groups', [BreedingGroupController::class, 'index']);
+Route::post('/breeding-groups', [BreedingGroupController::class, 'store']);
+Route::delete('/breeding-groups/{id}', [BreedingGroupController::class, 'destroy']);
+Route::put('/breeding-groups/{id}', [BreedingGroupController::class, 'update']);
+Route::get('/breeding-groups/{id}', [BreedingGroupController::class, 'show']);
 
 
 Route::apiResource('inventories', InventoryController::class);

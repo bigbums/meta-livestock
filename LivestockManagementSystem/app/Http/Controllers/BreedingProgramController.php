@@ -8,9 +8,28 @@ use Illuminate\Http\Request;
 class BreedingProgramController extends Controller
 {
     // Retrieve all breeding programs
+    // public function index()
+    // {
+    //     return BreedingProgram::all();
+    // }
+
+    // Retrieve all breeding programs
     public function index()
     {
-        return BreedingProgram::all();
+        $programs = BreedingProgram::all();
+
+        if ($programs->isEmpty()) {
+            return response()->json(['message' => 'No breeding programs found.'], 404);
+        }
+
+        return response()->json($programs);
+    }
+
+
+    public function indexBreedingGroup()
+    {
+        $programs = BreedingProgram::all('program_name'); // Retrieve only the program names
+        return response()->json($programs);
     }
 
     // Retrieve a specific breeding program
@@ -23,13 +42,17 @@ class BreedingProgramController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'objective' => 'required|string|max:500',
+            'program_name' => 'required|string|max:255',
+            'description' => 'string|max:255',
+            'target_offspring_count' => 'nullable|integer',
+            'livestock_group_id' => 'integer|exists:livestock_groups,id',
+            // 'objective' => 'required|string|max:500',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
         ]);
 
         $breedingProgram = BreedingProgram::create($validatedData);
+        // $breedingProgram = $request->all();
         return response()->json($breedingProgram, 201);
     }
 
@@ -38,21 +61,33 @@ class BreedingProgramController extends Controller
     {
         $breedingProgram = BreedingProgram::findOrFail($id);
         $validatedData = $request->validate([
-            'name' => 'string|max:255',
-            'objective' => 'string|max:500',
+            'program_name' => 'string|max:255',
+            'description' => 'string|max:255',
+            'target_offspring_count' => 'nullable|integer',
             'start_date' => 'date',
             'end_date' => 'nullable|date',
+            'livestock_group_id' => 'integer|exists:livestock_groups,id',
         ]);
 
         $breedingProgram->update($validatedData);
-        return response()->json($breedingProgram, 200);
+        // $breed = $request->all();
+        // return response()->json($breedingProgram, 200);
+        return response()->json(200);
     }
 
     // Delete a breeding program
+    // public function destroy($id)200
+    // {
+    //     $breedingProgram = BreedingProgram::findOrFail($id);
+    //     $breedingProgram->delete();
+    //     return response()->json(['message' => 'Breeding program deleted successfully'], 200);
+    // }
+
     public function destroy($id)
     {
-        $breedingProgram = BreedingProgram::findOrFail($id);
-        $breedingProgram->delete();
-        return response()->json(['message' => 'Breeding program deleted successfully'], 200);
+        $program = BreedingProgram::findOrFail($id);
+        $program->delete();
+
+        return response()->json(['message' => 'Breeding program deleted successfully.']);
     }
 }

@@ -100,4 +100,9 @@ class Livestock extends Model
     {
         return $this->belongsToMany(LivestockGroup::class, 'livestock_group_livestock', 'livestock_id', 'group_id');
     }
+
+    public function breedingGroups()
+    {
+        return $this->belongsToMany(BreedingGroup::class, 'breeding_group_livestock');
+    }
 }

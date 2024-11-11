@@ -125,7 +125,7 @@ export default function FeedScheduleList() {
 
       <div className="mt-4">
         <Link
-          to="/modules/FeedingManagement/FeedScheduleForm"
+          to="/modules/feeding-management/feed-schedule-form"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Create Feed Schedule

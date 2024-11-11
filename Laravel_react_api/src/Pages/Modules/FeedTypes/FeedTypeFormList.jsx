@@ -182,13 +182,13 @@ export default function FeedTypeFormList() {
                   <td className="px-4 py-2 border">{feedType.feed_type_desc || 'No description'}</td>
                   <td className="px-4 py-2 border text-center">
                     <Link
-                      to={`/modules/FeedTypes/FeedTypeFormDetails/${feedType.id}`}
+                      to={`/modules/feed-types/feed-type-form-details/${feedType.id}`}
                       className="text-blue-500 hover:underline mx-2"
                     >
                       View
                     </Link>
                     <Link
-                      to={`/feed-types/${feedType.id}/edit`}
+                      to={`/modules/feed-types/${feedType.id}/edit`}
                       className="text-green-500 hover:underline mx-2"
                     >
                       Edit
@@ -211,7 +211,7 @@ export default function FeedTypeFormList() {
 
       <div className="mt-4">
         <Link
-          to="/modules/FeedTypes/FeedTypeForm"
+          to="/feedTypeForm"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Create New Feed Type
