@@ -22,6 +22,24 @@ const Breeding = () => {
             </Link>
       </div>
 
+      <div className="mt-10">
+            <Link
+            to="/estrus-cycles-list"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+            Estrus Cycles
+            </Link>
+      </div>
+
+      <div className="mt-10">
+            <Link
+            to="/pregnancy-records-form"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+            Pregnancy Records
+            </Link>
+      </div>
+
     </div>
   )
 }

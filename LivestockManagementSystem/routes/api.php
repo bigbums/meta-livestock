@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\Role;
+use App\Models\EstrusCycle;
 use Illuminate\Http\Request;
-use App\Models\FeedDistribution;
 
+use App\Models\FeedDistribution;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\PedigreeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LivestockController;
 use App\Http\Controllers\PrivilegeController;
+use App\Http\Controllers\EstrusCycleController;
 use App\Http\Controllers\FeedScheduleController;
 use App\Http\Controllers\HealthRecordController;
 use App\Http\Controllers\BreedingGroupController;
@@ -36,8 +38,12 @@ use App\Http\Controllers\FeedDistributionController;
 use App\Http\Controllers\FeedingManagementController;
 use App\Http\Controllers\BreedingManagementController;
 use App\Http\Controllers\LocalizatnTrackingController;
+
+use App\Http\Controllers\BreedingGroupManagerController;
+use App\Http\Controllers\EnvironmentManagementController;
 use App\Http\Controllers\NutritionalRequirementController;
 use App\Http\Controllers\HandlingEventManagementController;
+use App\Http\Controllers\PregnancyRecordController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -185,13 +191,38 @@ Route::delete('/breeding-programs/{id}', [BreedingProgramController::class, 'des
 
 
 // Route::get('/breeding-groups', [BreedingProgramController::class, 'indexBreedingGroup']);
-use App\Http\Controllers\BreedingGroupManagerController;
+
 
 Route::get('/breeding-groups', [BreedingGroupController::class, 'index']);
 Route::post('/breeding-groups', [BreedingGroupController::class, 'store']);
 Route::delete('/breeding-groups/{id}', [BreedingGroupController::class, 'destroy']);
 Route::put('/breeding-groups/{id}', [BreedingGroupController::class, 'update']);
 Route::get('/breeding-groups/{id}', [BreedingGroupController::class, 'show']);
+
+Route::get('/estrus-cycles', [EstrusCycleController::class, 'index']);
+Route::post('/estrus-cycles', [EstrusCycleController::class, 'store']);
+Route::delete('/estrus-cycles/{id}', [EstrusCycleController::class, 'destroy']);
+Route::put('/estrus-cycles/{id}', [EstrusCycleController::class, 'update']);
+Route::get('/estrus-cycles/{id}', [EstrusCycleController::class, 'show']);
+
+
+
+//Route::apiResource('pregnancy-records', PregnancyRecordController::class);
+
+Route::get('/pregnancy-records', [PregnancyRecordController::class, 'index']);
+Route::post('/pregnancy-records', [PregnancyRecordController::class, 'store']);
+Route::delete('/pregnancy-records/{id}', [PregnancyRecordController::class, 'destroy']);
+Route::put('/pregnancy-records/{id}', [PregnancyRecordController::class, 'update']);
+Route::get('/pregnancy-records/{id}', [PregnancyRecordController::class, 'show']);
+
+
+Route::get('/environment-monitoring', [EnvironmentManagementController::class, 'index']);
+Route::post('/environment-monitoring', [EnvironmentManagementController::class, 'store']);
+Route::delete('/environment-monitoring/{id}', [EnvironmentManagementController::class, 'destroy']);
+Route::put('/environment-monitoring/{id}', [EnvironmentManagementController::class, 'update']);
+Route::get('/environment-monitoring/{id}', [EnvironmentManagementController::class, 'show']);
+
+
 
 
 Route::apiResource('inventories', InventoryController::class);

@@ -5,19 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pregnancy extends Model
+class EstrusCycle extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'livestock_id',
-        'breeding_date',
-        'pregnancy_status',
-        'detection_method',
-        'detection_date',
-        'expected_delivery_date',
-        'notes',
-    ];
+    protected $fillable = ['livestock_id', 'start_date', 'end_date', 'activity_level', 'temperature_change', 'behavior_notes'];
 
     public function livestock()
     {

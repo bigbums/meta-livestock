@@ -105,4 +105,24 @@ class Livestock extends Model
     {
         return $this->belongsToMany(BreedingGroup::class, 'breeding_group_livestock');
     }
+
+    public function estrusCycles()
+    {
+        return $this->hasMany(EstrusCycle::class);
+    }
+
+    public function sensorData()
+    {
+        return $this->hasMany(EstrusSensorData::class);
+    }
+
+    public function pregnancyRecords()
+    {
+        return $this->hasMany(Pregnancy::class);
+    }
+
+    public function healthRecord()
+    {
+        return $this->hasMany(HealthRecord::class);
+    }
 }

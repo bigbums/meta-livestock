@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('pregnancy', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('livestock_id')->constrained('livestock')->onDelete('cascade');
+            $table->date('breeding_date');
+            $table->enum('pregnancy_status', ['positive', 'negative', 'pending'])->default('pending');
+            $table->string('detection_method')->nullable();
+            $table->date('detection_date')->nullable();
+            $table->date('expected_delivery_date')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
